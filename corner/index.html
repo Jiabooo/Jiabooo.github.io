@@ -263,7 +263,7 @@
   }
 </style>
 <script src="https://lib.baomitu.com/p5.js/1.9.0/p5.min.js"></script><style>
-  /* 1. 魔法阵容器 (确保在星空之上) */
+  /* 1. 魔法阵容器 */
   div#hexo-blog-encrypt {
     position: relative;
     width: 320px;
@@ -279,7 +279,7 @@
   }
   div#hexo-blog-encrypt label { display: none; }
 
-  /* 2. 局部星空层 (绝对定位填满父容器) */
+  /* 2. 局部星空层 (绝对定位) */
   #universe-overlay {
     position: absolute; 
     top: 0; left: 0;
@@ -287,14 +287,12 @@
     height: 100%;
     /* 深空背景 */
     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    z-index: 1; 
-    border-radius: 8px; /* 适配圆角 */
+    z-index: 1; /* 盖在白底上 */
+    border-radius: 8px; 
     pointer-events: none;
-    transition: opacity 0.8s ease; /* 还原时的淡出动画 */
-    opacity: 1;
   }
 
-  /* 星星动画 */
+  /* 星星点缀 */
   #universe-overlay::after {
     content: "";
     position: absolute;
@@ -302,8 +300,7 @@
     background-image: 
       radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
       radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0));
+      radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0));
     background-repeat: repeat;
     background-size: 200px 200px;
     animation: twinkle 4s infinite;
@@ -380,83 +377,62 @@
     const encryptBox = document.getElementById('hexo-blog-encrypt');
     if (!encryptBox) return; 
 
-    // --- 1. 定位文章容器并注入星空 ---
+    // --- 1. 定位白色容器 & 插入星空 ---
     let targetContainer = document.getElementById('article-container') || 
                           document.querySelector('.post-content') || 
                           encryptBox.parentNode;
     
-    let checkInterval = null; // 定时器变量
-    let scene, renderer, camera; // Three.js 变量，方便销毁
-
     if (targetContainer && !document.getElementById('universe-overlay')) {
-      // 保存原始样式，防止样式污染
-      const originalPosition = targetContainer.style.position;
-      const originalOverflow = targetContainer.style.overflow;
-      const originalMinHeight = targetContainer.style.minHeight;
-
-      // 强制设置容器样式以容纳星空
+      // 强制父容器相对定位，以便星空能覆盖它
       targetContainer.style.position = 'relative';
-      targetContainer.style.overflow = 'hidden';
-      targetContainer.style.minHeight = '400px'; // 保证锁定时有高度
+      targetContainer.style.overflow = 'hidden'; // 暂时隐藏溢出
 
-      // 插入星空层
       const overlay = document.createElement('div');
       overlay.id = 'universe-overlay';
+      // 插入星空
       targetContainer.insertBefore(overlay, targetContainer.firstChild);
 
-      // 【核心修复：强力监听解锁】
-      // 使用 setInterval 每 200ms 检查一次密码框还在不在
-      checkInterval = setInterval(() => {
+      // --- 关键修改：暴力移除逻辑 ---
+      const observer = new MutationObserver(() => {
         if (!document.getElementById('hexo-blog-encrypt')) {
-          // -> 发现密码框消失（解锁成功）
-          clearInterval(checkInterval); // 停止检查
-
-          // 1. 星空淡出
-          const bgOverlay = document.getElementById('universe-overlay');
-          if (bgOverlay) {
-            bgOverlay.style.opacity = '0';
-            setTimeout(() => {
-              if (bgOverlay.parentNode) bgOverlay.parentNode.removeChild(bgOverlay);
-            }, 800);
-          }
-
-          // 2. 销毁 Three.js 场景 (清理画布)
-          const magicCanvas = document.getElementById('magic-canvas-container');
-          if (magicCanvas && magicCanvas.parentNode) {
-            magicCanvas.parentNode.removeChild(magicCanvas);
-          }
-          // 释放内存资源
-          if (renderer) renderer.dispose();
-          if (scene) scene.clear();
-
-          // 3. 【最重要】强制还原父容器样式
-          // 必须还原 overflow，否则文章会被截断
-          targetContainer.style.position = originalPosition || '';
-          targetContainer.style.overflow = originalOverflow || '';
-          targetContainer.style.minHeight = originalMinHeight || '';
+          // 解锁了！执行清理：
           
-          console.log("Magic Circle Cleaned Up!");
+          // 1. 直接移除星空 DOM
+          const existingOverlay = document.getElementById('universe-overlay');
+          if (existingOverlay) {
+              existingOverlay.remove();
+          }
+
+          // 2. 还原父容器样式 (清除 relative 和 hidden)
+          // 这能保证原来的白色背景和排版完全恢复
+          targetContainer.style.position = '';
+          targetContainer.style.overflow = '';
+          
+          // 3. 停止监听
+          observer.disconnect();
         }
-      }, 200);
+      });
+      observer.observe(targetContainer, { childList: true, subtree: true });
     }
 
     if (document.getElementById('magic-canvas-container')) return;
 
-    // --- 2. Three.js 逻辑 ---
+    // --- 2. Three.js 魔法阵 (保持不变) ---
     const canvasDiv = document.createElement('div');
     canvasDiv.id = 'magic-canvas-container';
     encryptBox.insertBefore(canvasDiv, encryptBox.firstChild);
 
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
     camera.position.z = 5;
 
-    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(500, 500);
     renderer.setPixelRatio(window.devicePixelRatio);
     canvasDiv.appendChild(renderer.domElement);
 
     const textureLoader = new THREE.TextureLoader();
+    // 图片路径
     const magicTexture = textureLoader.load('/img/magic.png'); 
 
     const geometry = new THREE.PlaneGeometry(5, 5);
@@ -475,7 +451,7 @@
     const clock = new THREE.Clock();
 
     function animate() {
-      // 如果已经被销毁，停止循环
+      // 如果密码框不存在了，直接停止渲染
       if (!document.getElementById('hexo-blog-encrypt')) return;
 
       requestAnimationFrame(animate);

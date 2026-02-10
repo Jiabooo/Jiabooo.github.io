@@ -184,7 +184,7 @@
     </div>
   </div>
 </div>
-<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css"></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2026 By Jiabooo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><p>希望自己的日积月累，终能成他人的望尘莫及</p><p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><div class="footer-waves-container">
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css"></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2026 By Jiabooo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><p>希望自己的日积月累，终能成他人的望尘莫及</p><p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><div id="footer-waves" style="display: none;">
   <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
     <defs>
       <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
@@ -197,20 +197,45 @@
     </g>
   </svg>
 </div>
+
+<script>
+  (function() {
+    var waves = document.getElementById('footer-waves');
+    var footer = document.getElementById('footer');
+    if (waves && footer) {
+      // 把波浪放入页脚内部
+      footer.appendChild(waves);
+      waves.style.display = 'block';
+    }
+  })();
+</script>
+
 <style>
-  /* 让波浪容器位于页脚最顶端 */
-  .footer-waves-container {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 10vh; /* 波浪高度 */
-    min-height: 80px;
-    max-height: 150px;
-    bottom: 0; /* 贴在底部 */
-    z-index: -1; /* 放在内容后面，作为背景 */
+  /* 修复页脚背景：设为渐变海洋蓝 */
+  #footer {
+    background: linear-gradient(180deg, #49b1f5 0%, #0086b3 100%) !important;
+    position: relative;
+    z-index: 1;
+    overflow: hidden; /* 防止波浪溢出 */
   }
   
-  /* 波浪 SVG 设置 */
+  /* 确保文字颜色为白色 */
+  #footer-wrap, #footer-wrap a {
+    color: #ffffff !important;
+  }
+
+  /* 波浪容器定位 */
+  #footer-waves {
+    position: absolute;
+    bottom: 0; /* 沉在页脚底部 */
+    left: 0;
+    width: 100%;
+    height: 12vh; /* 波浪高度 */
+    min-height: 80px;
+    z-index: 0; /* 在文字后面 */
+  }
+  
+  /* 波浪动画 */
   .waves {
     position: absolute;
     width: 100%;
@@ -218,8 +243,6 @@
     left: 0;
     bottom: 0;
   }
-
-  /* 动画参数 */
   .parallax > use {
     animation: move-forever 25s cubic-bezier(.55, .5, .45, .5) infinite;
   }
@@ -232,40 +255,10 @@
     0% { transform: translate3d(-90px, 0, 0); }
     100% { transform: translate3d(85px, 0, 0); }
   }
-
-  /* 关键：调整 Butterfly 现有页脚的样式来配合波浪 */
-  /* 1. 把页脚背景设为透明，让波浪后的颜色透出来（如果需要） */
-  /* 或者让波浪变成页脚的顶部装饰 */
-  
-  #footer {
-    background: transparent !important; /* 你的页脚本身透明 */
-    position: relative;
-    z-index: 1;
-    margin-top: 0;
-  }
-  
-  /* 给波浪容器一个背景色，衔接上面的白色内容 */
-  /* 这里是个技巧：我们让波浪是白色的，波浪的背景是蓝色的(页脚色) */
-  /* 但 SVG 里画的是白色波浪，所以我们需要反过来思考 */
-  
-  /* 修正逻辑：我们把波浪插在 #footer 之前，或者让 #footer 自己带背景 */
-  /* 下面这个样式是把波浪放在页脚内容的“上面”作为分割线 */
-  
-  .footer-waves-container {
-      position: absolute;
-      top: -60px; /* 向上提，覆盖在页脚和正文交界处 */
-      bottom: auto;
-      transform: rotate(180deg); /* 翻转，让浪花朝下打，衔接蓝色页脚 */
-      z-index: 0;
-  }
   
   /* 移动端适配 */
   @media (max-width: 768px) {
-    .footer-waves-container {
-      height: 50px;
-      min-height: 50px;
-      top: -40px;
-    }
+    #footer-waves { height: 60px; min-height: 60px; }
   }
 </style>
 <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

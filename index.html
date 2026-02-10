@@ -53,7 +53,7 @@
   isHome: true,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2026-02-10 13:32:29'
+  postUpdate: '2026-02-10 13:36:07'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -150,228 +150,7 @@
         }
       }
       detectApple()
-    })(window)</script><script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script><style>
-  /* 容器样式：让 canvas 居中并作为背景 */
-  div#hexo-blog-encrypt {
-    position: relative;
-    width: 320px;
-    height: 320px;
-    margin: 80px auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: transparent !important; /* 透明背景，让 p5 绘制 */
-    overflow: visible;
-  }
-  div#hexo-blog-encrypt label { display: none; }
-
-  /* p5.js 画布容器 (作为背景层) */
-  #magic-canvas-container {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 0; /* 在输入框后面 */
-    pointer-events: none; /* 不干扰点击 */
-    width: 400px; /* 画布稍微大一点以免特效被切 */
-    height: 400px;
-  }
-
-  /* 输入框样式 (保留之前的黑金风格，稍作调整) */
-  div#hexo-blog-encrypt input {
-    background: rgba(0, 0, 0, 0.6) !important;
-    border: 1px solid rgba(255, 215, 0, 0.5) !important;
-    border-bottom: 2px solid #ffd700 !important;
-    color: #ffd700 !important;
-    text-align: center;
-    font-family: 'Courier New', serif;
-    width: 180px !important;
-    margin-bottom: 20px !important;
-    z-index: 10;
-    position: relative;
-  }
-  
-  /* 按钮样式 */
-  div#hexo-blog-encrypt input[type="button"] {
-    width: 50px !important;
-    height: 50px !important;
-    border-radius: 50% !important;
-    background: radial-gradient(circle, #ffd700 0%, #d4af37 100%) !important;
-    border: 2px solid #fff !important;
-    color: transparent !important;
-    cursor: pointer;
-    z-index: 10;
-    position: relative;
-    box-shadow: 0 0 15px #ffd700;
-    transition: transform 0.2s;
-  }
-  div#hexo-blog-encrypt input[type="button"]:hover {
-    transform: scale(1.1);
-  }
-  /* 按钮图标 (钥匙) */
-  div#hexo-blog-encrypt input[type="button"]::after {
-       font-family: "Font Awesome 6 Free";
-       content: "\f084";
-       font-weight: 900;
-       color: #3e2c12;
-       position: absolute;
-       left: 50%; top: 50%;
-       transform: translate(-50%, -50%);
-       font-size: 20px;
-       pointer-events: none;
-  }
-</style>
-
-<script>
-  // 等待页面加载完成后初始化 p5.js
-  window.addEventListener('load', function() {
-    // 检查是否存在密码框
-    var encryptContainer = document.getElementById('hexo-blog-encrypt');
-    if (!encryptContainer) return;
-
-    // 创建一个 div 来承载 canvas
-    var canvasDiv = document.createElement('div');
-    canvasDiv.id = 'magic-canvas-container';
-    encryptContainer.insertBefore(canvasDiv, encryptContainer.firstChild);
-
-    // p5.js 实例模式 (避免污染全局变量)
-    var magicSketch = function(p) {
-      let rotationAngle = 0;
-      let rotationVelocity = 0.005; // 恒定旋转速度
-      let magicSize = 140; // 固定魔法阵大小
-      let magicAlpha = 200; // 固定透明度
-      let particles = []; // 粒子数组
-
-      p.setup = function() {
-        let canvas = p.createCanvas(400, 400);
-        canvas.parent('magic-canvas-container');
-        p.angleMode(p.RADIANS);
-        p.noBackground(); // 透明背景
-      };
-
-      p.draw = function() {
-        p.clear(); // 清除上一帧，保持透明背景
-
-        // 1. 更新旋转
-        rotationAngle += rotationVelocity;
-
-        // 2. 绘制魔法阵 (居中)
-        p.push();
-        p.translate(p.width / 2, p.height / 2);
-        drawMagicCircle(rotationAngle);
-        p.pop();
-
-        // 3. 产生环境粒子 (模拟能量溢出)
-        if (p.frameCount % 5 === 0) {
-          spawnAmbientParticle();
-        }
-        updateParticles();
-      };
-
-      // --- 核心绘制逻辑 (移植自你的代码) ---
-      function drawMagicCircle(rot) {
-        p.rotate(rot);
-        p.noFill();
-        p.strokeWeight(2);
-
-        // 外层星轨 (改为金色系)
-        p.stroke(255, 215, 0, magicAlpha * 0.5);
-        for (let i = 0; i < 6; i++) {
-          let offset = p.TWO_PI / 6 * i;
-          p.arc(0, 0, magicSize * 1.8, magicSize * 1.8, offset, offset + p.PI / 3);
-        }
-
-        p.stroke(255, 223, 0, magicAlpha * 0.4);
-        p.ellipse(0, 0, magicSize * 2.0);
-
-        // 主星阵 (亮金)
-        p.stroke(255, 215, 0, magicAlpha);
-        drawPolygon(0, 0, magicSize, 12); // 放大一点
-
-        // 连线
-        for (let i = 0; i < 12; i++) {
-          let a1 = p.TWO_PI / 12 * i;
-          let a2 = p.TWO_PI / 12 * ((i + 5) % 12); // 稍微调整连线跨度
-          p.line(
-            p.cos(a1) * magicSize,
-            p.sin(a1) * magicSize,
-            p.cos(a2) * magicSize,
-            p.sin(a2) * magicSize
-          );
-        }
-
-        // 月纹 (改为淡金白)
-        p.stroke(255, 250, 220, magicAlpha * 0.9);
-        p.arc(0, 0, magicSize * 1.4, magicSize * 1.4, p.PI * 0.2, p.PI * 0.8);
-        p.arc(0, 0, magicSize * 1.4, magicSize * 1.4, p.PI * 1.2, p.PI * 1.8);
-
-        // 符文刻线
-        p.stroke(212, 175, 55, magicAlpha * 0.8);
-        for (let i = 0; i < 24; i++) {
-          let a = p.TWO_PI / 24 * i;
-          p.line(
-            p.cos(a) * magicSize * 0.4,
-            p.sin(a) * magicSize * 0.4,
-            p.cos(a) * magicSize * 0.6,
-            p.sin(a) * magicSize * 0.6
-          );
-        }
-        
-        // 核心光点
-        p.noStroke();
-        p.fill(255, 215, 0, 100);
-        p.ellipse(0, 0, magicSize * 0.2);
-      }
-
-      // 多边形辅助函数
-      function drawPolygon(x, y, r, n) {
-        p.beginShape();
-        for (let i = 0; i < n; i++) {
-          let a = p.TWO_PI / n * i;
-          p.vertex(x + p.cos(a) * r, y + p.sin(a) * r);
-        }
-        p.endShape(p.CLOSE);
-      }
-
-      // --- 粒子系统 (简化版) ---
-      function spawnAmbientParticle() {
-        let angle = p.random(p.TWO_PI);
-        let r = magicSize * 0.5; // 从中心附近产生
-        particles.push({
-          x: p.cos(angle) * r,
-          y: p.sin(angle) * r,
-          vx: p.cos(angle) * 0.5, // 向外扩散
-          vy: p.sin(angle) * 0.5,
-          size: p.random(2, 5),
-          life: 255,
-          col: [255, 215, 0] // 金色粒子
-        });
-      }
-
-      function updateParticles() {
-        p.push();
-        p.translate(p.width/2, p.height/2); // 以中心为基准
-        for (let i = particles.length - 1; i >= 0; i--) {
-          let pt = particles[i];
-          pt.x += pt.vx;
-          pt.y += pt.vy;
-          pt.life -= 4; // 衰减速度
-
-          p.noStroke();
-          p.fill(pt.col[0], pt.col[1], pt.col[2], pt.life);
-          p.ellipse(pt.x, pt.y, pt.size);
-
-          if (pt.life <= 0) particles.splice(i, 1);
-        }
-        p.pop();
-      }
-    };
-
-    // 启动 p5 实例
-    new p5(magicSketch);
-  });
-</script>
-<meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="triangles-wrap"><div class="triangles-eiz"></div><div class="triangles-seiz"></div><div class="triangles-sei"></div><div class="triangles-fei"></div><div class="triangles-feir"></div><div class="triangles-trei"></div><div class="triangles-dvai"></div><div class="triangles-ein"></div><div class="triangles-zero"></div></div></div><script>(()=>{
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="triangles-wrap"><div class="triangles-eiz"></div><div class="triangles-seiz"></div><div class="triangles-sei"></div><div class="triangles-fei"></div><div class="triangles-feir"></div><div class="triangles-trei"></div><div class="triangles-dvai"></div><div class="triangles-ein"></div><div class="triangles-zero"></div></div></div><script>(()=>{
   const $loadingBox = document.getElementById('loading-box')
   const $body = document.body
   const preloader = {
@@ -405,7 +184,7 @@ More info: Generating
 Deploy to remote sites1$ hexo deploy
 
 More info: Deployment
-</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jiabooo</div><div class="author-info__description">渺小启程，璀璨落幕</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jiaboo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Jiabooo/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://blog.csdn.net/weixin_63767221" target="_blank" title="CSDN"><i class="fa fa-book-open"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=826557522&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:826557522@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><center>主域名：<br><a href="https://www.jiabooo.top">www.jiabooo.top</a><br><p>欢迎大家访问我的小站。如果想技术交流，可以给我发email。</p><a href="mailto:826557522@qq.com">📬：826557522@qq.com<b></center></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/19/hello-world/" title="Hello World">Hello World</a><time datetime="2024-07-19T09:37:12.851Z" title="Created 2024-07-19 17:37:12">2024-07-19</time></div></div></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">July 2024</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">1</div></div><div class="webinfo-item"><div class="item-name">Runtime :</div><div class="item-count" id="runtimeshow" data-publishDate="2024-07-18T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Update :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-02-10T05:32:29.882Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2026 By Jiabooo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><p>希望自己的日积月累，终能成他人的望尘莫及</p><p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
+</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jiabooo</div><div class="author-info__description">渺小启程，璀璨落幕</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jiaboo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Jiabooo/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://blog.csdn.net/weixin_63767221" target="_blank" title="CSDN"><i class="fa fa-book-open"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=826557522&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:826557522@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><center>主域名：<br><a href="https://www.jiabooo.top">www.jiabooo.top</a><br><p>欢迎大家访问我的小站。如果想技术交流，可以给我发email。</p><a href="mailto:826557522@qq.com">📬：826557522@qq.com<b></center></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/19/hello-world/" title="Hello World">Hello World</a><time datetime="2024-07-19T09:37:12.851Z" title="Created 2024-07-19 17:37:12">2024-07-19</time></div></div></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">July 2024</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">1</div></div><div class="webinfo-item"><div class="item-name">Runtime :</div><div class="item-count" id="runtimeshow" data-publishDate="2024-07-18T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Update :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-02-10T05:36:07.923Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2026 By Jiabooo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><p>希望自己的日积月累，终能成他人的望尘莫及</p><p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
   init: (str) => {
     window.typed = new Typed('#subtitle', Object.assign({
       strings: str,
@@ -512,4 +291,211 @@ typedJSFn.run(subtitleType)</script></div><div id="footer-waves" style="display:
     .waves { height: 50px; min-height: 50px; }
   }
 </style>
+<script src="https://lib.baomitu.com/p5.js/1.9.0/p5.min.js"></script><style>
+  /* 容器基础样式 */
+  div#hexo-blog-encrypt {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    margin: 80px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* 给一个深色背景，确保金色魔法阵能被看见 */
+    background: radial-gradient(circle, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 60%, transparent 100%) !important;
+    overflow: visible !important; /* 关键：允许魔法阵超出边界显示 */
+    z-index: 1;
+  }
+  div#hexo-blog-encrypt label { display: none; }
+
+  /* 画布容器定位 */
+  #magic-canvas-container {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; height: 400px;
+    z-index: -1; /* 放在输入框后面 */
+    pointer-events: none;
+  }
+  
+  /* 强制 canvas 样式 */
+  #magic-canvas-container canvas {
+      display: block;
+      margin: 0 auto;
+  }
+
+  /* 输入框样式 */
+  div#hexo-blog-encrypt input {
+    background: rgba(0, 0, 0, 0.5) !important;
+    border: none !important;
+    border-bottom: 2px solid #ffd700 !important;
+    color: #ffd700 !important;
+    text-align: center;
+    font-family: monospace;
+    font-size: 18px;
+    width: 180px !important;
+    margin-bottom: 20px !important;
+    z-index: 10;
+    position: relative;
+    text-shadow: 0 0 5px #ffd700;
+  }
+  
+  /* 按钮样式 */
+  div#hexo-blog-encrypt input[type="button"] {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+    background: #ffd700 !important;
+    border: 2px solid #fff !important;
+    color: transparent !important;
+    cursor: pointer;
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 0 15px #ffd700;
+    transition: transform 0.2s;
+  }
+  div#hexo-blog-encrypt input[type="button"]:hover { transform: scale(1.1); }
+  
+  /* 按钮图标 */
+  div#hexo-blog-encrypt input[type="button"]::after {
+       font-family: "Font Awesome 6 Free";
+       content: "\f084";
+       font-weight: 900;
+       color: #000;
+       position: absolute;
+       left: 50%; top: 50%;
+       transform: translate(-50%, -50%);
+       font-size: 20px;
+       pointer-events: none;
+  }
+</style>
+
+<script>
+  (function() {
+    // 定义初始化函数
+    function initMagicCircle() {
+      // 1. 检查 P5 是否加载
+      if (typeof p5 === 'undefined') {
+        console.error('P5.js loading...');
+        setTimeout(initMagicCircle, 500); // 没加载就等0.5秒重试
+        return;
+      }
+
+      // 2. 检查密码框是否存在
+      var encryptContainer = document.getElementById('hexo-blog-encrypt');
+      if (!encryptContainer) {
+        console.log('No encrypt container found on this page.');
+        return;
+      }
+
+      // 3. 防止重复初始化
+      if (document.getElementById('magic-canvas-container')) return;
+
+      console.log('Initializing Magic Circle...');
+
+      // 4. 创建画布容器
+      var canvasDiv = document.createElement('div');
+      canvasDiv.id = 'magic-canvas-container';
+      encryptContainer.insertBefore(canvasDiv, encryptContainer.firstChild);
+
+      // 5. 定义 P5 Sketch
+      var magicSketch = function(p) {
+        let rotationAngle = 0;
+        let magicSize = 130;
+        let particles = [];
+
+        p.setup = function() {
+          let canvas = p.createCanvas(400, 400);
+          canvas.parent('magic-canvas-container');
+          p.angleMode(p.RADIANS);
+          p.frameRate(30); // 降低帧率减少性能消耗
+        };
+
+        p.draw = function() {
+          p.clear(); // 关键：清除背景保持透明
+
+          rotationAngle += 0.005;
+
+          p.push();
+          p.translate(p.width / 2, p.height / 2);
+          
+          // --- 绘制魔法阵 ---
+          p.rotate(rotationAngle);
+          p.noFill();
+          p.strokeWeight(2);
+
+          // 外圈
+          p.stroke(255, 215, 0, 150);
+          p.ellipse(0, 0, magicSize * 2.2);
+          
+          // 内圈复杂结构
+          p.stroke(255, 215, 0, 100);
+          for (let i = 0; i < 6; i++) {
+            let offset = p.TWO_PI / 6 * i;
+            p.arc(0, 0, magicSize * 1.8, magicSize * 1.8, offset, offset + p.PI / 3);
+          }
+
+          // 六芒星
+          p.stroke(255, 215, 0, 200);
+          drawPolygon(p, 0, 0, magicSize, 3, 0); // 正三角
+          drawPolygon(p, 0, 0, magicSize, 3, p.PI); // 倒三角
+
+          // 核心圆
+          p.noStroke();
+          p.fill(255, 215, 0, 50);
+          p.ellipse(0, 0, magicSize * 0.4);
+
+          p.pop();
+
+          // --- 粒子效果 ---
+          if (p.frameCount % 10 === 0) spawnParticle(p);
+          updateParticles(p);
+        };
+
+        function drawPolygon(p, x, y, r, n, offsetAngle) {
+          p.beginShape();
+          for (let i = 0; i < n; i++) {
+            let a = p.TWO_PI / n * i + offsetAngle;
+            p.vertex(x + p.cos(a) * r, y + p.sin(a) * r);
+          }
+          p.endShape(p.CLOSE);
+        }
+
+        function spawnParticle(p) {
+          let angle = p.random(p.TWO_PI);
+          let r = 50;
+          particles.push({
+            x: p.width/2 + p.cos(angle) * r,
+            y: p.height/2 + p.sin(angle) * r,
+            vx: p.cos(angle) * 0.5,
+            vy: p.sin(angle) * 0.5,
+            life: 255
+          });
+        }
+
+        function updateParticles(p) {
+          p.noStroke();
+          for (let i = particles.length - 1; i >= 0; i--) {
+            let pt = particles[i];
+            pt.x += pt.vx;
+            pt.y += pt.vy;
+            pt.life -= 5;
+            p.fill(255, 215, 0, pt.life);
+            p.ellipse(pt.x, pt.y, 3);
+            if (pt.life <= 0) particles.splice(i, 1);
+          }
+        }
+      };
+
+      new p5(magicSketch);
+    }
+
+    // 页面加载后执行
+    window.addEventListener('load', initMagicCircle);
+    
+    // 适配 Pjax (如果你用了 Pjax 跳转，这行代码能确保跳转后依然显示)
+    document.addEventListener('pjax:complete', initMagicCircle);
+  })();
+</script>
 <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

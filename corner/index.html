@@ -263,7 +263,7 @@
   }
 </style>
 <script src="https://lib.baomitu.com/p5.js/1.9.0/p5.min.js"></script><style>
-  /* 1. 魔法阵容器 (最高层级) */
+  /* 1. 魔法阵容器 (层级最高，确保不被遮挡) */
   div#hexo-blog-encrypt {
     position: relative;
     width: 320px;
@@ -275,25 +275,29 @@
     align-items: center;
     background: transparent !important;
     overflow: visible !important;
-    z-index: 9 !important; /* 确保在星空之上 */
+    z-index: 9999 !important; 
   }
   div#hexo-blog-encrypt label { display: none; }
 
-  /* 2. 强制星空天幕 (覆盖原背景) */
+  /* 2. 星空天幕 (全屏覆盖，但层级受控) */
   #universe-overlay {
-    position: fixed; /* 固定定位，铺满全屏 */
+    position: fixed;
     top: 0; left: 0;
     width: 100vw;
     height: 100vh;
-    /* 深空渐变背景 */
+    /* 深空渐变 */
     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    # z-index: 99998; /* 在魔法阵下面，但在网页内容上面 */
-    pointer-events: none; /* 让鼠标事件穿透，虽然它挡住了视觉，但不挡逻辑 */
-    transition: opacity 1.5s ease-in-out; /* 消失时的动画 */
+    
+    /* 【关键修改】层级设为 100 */
+    /* 这个值足够盖住文章的白色背景，但我们会把标题设得更高 */
+    z-index: 100; 
+    
+    pointer-events: none;
+    transition: opacity 1.5s ease-in-out;
     opacity: 1;
   }
 
-  /* 加点星星点缀 (纯CSS绘制) */
+  /* 星星点缀 */
   #universe-overlay::after {
     content: "";
     position: absolute;
@@ -302,22 +306,26 @@
       radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
       radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
       radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+      radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0));
     background-repeat: repeat;
     background-size: 200px 200px;
     animation: twinkle 4s infinite;
     opacity: 0.3;
   }
-
   @keyframes twinkle {
     0% { opacity: 0.3; transform: translateY(0); }
     50% { opacity: 0.5; }
     100% { opacity: 0.3; transform: translateY(-20px); }
   }
 
-  /* 3. 画布容器 */
+  /* 3. 【核心修改】强制提升页头(标题栏)的层级 */
+  #page-header {
+     position: relative;
+     /* 设置为 101，比星空(100)高，所以标题会显示在星空上面 */
+     z-index: 101 !important; 
+  }
+
+  /* 4. 画布容器 */
   #magic-canvas-container {
     position: absolute;
     top: 50%; left: 50%;
@@ -327,7 +335,7 @@
     pointer-events: none;
   }
 
-  /* 4. 输入框美化 (半透明科技蓝) */
+  /* 5. 输入框美化 */
   div#hexo-blog-encrypt input {
     background: rgba(0, 20, 40, 0.6) !important;
     border: 1px solid rgba(0, 196, 182, 0.4) !important;
@@ -348,7 +356,7 @@
      box-shadow: 0 0 15px rgba(0, 196, 182, 0.6);
   }
 
-  /* 5. 按钮美化 */
+  /* 6. 按钮美化 */
   div#hexo-blog-encrypt input[type="button"] {
     width: 50px !important;
     height: 50px !important;
@@ -380,33 +388,30 @@
 
   function initMagicScene() {
     const container = document.getElementById('hexo-blog-encrypt');
-    if (!container) return; // 如果没有锁，直接退出
-    
-    // --- 1. 创建星空天幕 ---
+    if (!container) return; 
+
+    // --- 星空天幕逻辑 ---
     if (!document.getElementById('universe-overlay')) {
       const overlay = document.createElement('div');
       overlay.id = 'universe-overlay';
-      // 将天幕插入到 body 的最前面，或者直接 append
       document.body.appendChild(overlay);
 
       // 监听解锁，移除天幕
       const observer = new MutationObserver(() => {
         if (!document.getElementById('hexo-blog-encrypt')) {
-          // 解锁成功！
-          overlay.style.opacity = '0'; // 渐隐
+          overlay.style.opacity = '0'; 
           setTimeout(() => {
              if(overlay.parentNode) overlay.parentNode.removeChild(overlay);
-          }, 1500); // 等待动画结束移除 DOM
+          }, 1500);
           observer.disconnect();
         }
       });
       observer.observe(document.body, { childList: true, subtree: true });
     }
 
-    // 防止重复初始化 Three.js
     if (document.getElementById('magic-canvas-container')) return;
 
-    // --- 2. Three.js 逻辑 ---
+    // --- Three.js 逻辑 ---
     const canvasDiv = document.createElement('div');
     canvasDiv.id = 'magic-canvas-container';
     container.insertBefore(canvasDiv, container.firstChild);
@@ -421,7 +426,7 @@
     canvasDiv.appendChild(renderer.domElement);
 
     const textureLoader = new THREE.TextureLoader();
-    // 【注意】确保图片路径正确
+    // 图片路径
     const magicTexture = textureLoader.load('/img/magic.png'); 
 
     const geometry = new THREE.PlaneGeometry(5, 5);
@@ -441,7 +446,6 @@
 
     function animate() {
       if (!document.getElementById('hexo-blog-encrypt')) return;
-
       requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
       
@@ -453,7 +457,6 @@
 
       renderer.render(scene, camera);
     }
-
     animate();
   }
 

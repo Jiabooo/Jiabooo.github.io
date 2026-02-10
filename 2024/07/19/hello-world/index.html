@@ -152,7 +152,123 @@
         }
       }
       detectApple()
-    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="triangles-wrap"><div class="triangles-eiz"></div><div class="triangles-seiz"></div><div class="triangles-sei"></div><div class="triangles-fei"></div><div class="triangles-feir"></div><div class="triangles-trei"></div><div class="triangles-dvai"></div><div class="triangles-ein"></div><div class="triangles-zero"></div></div></div><script>(()=>{
+    })(window)</script><style>
+  /* 1. 隐藏原有的丑陋标签和边框 */
+  div#hexo-blog-encrypt {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    margin: 60px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent !important;
+    overflow: visible;
+  }
+  /* 隐藏 "Password" 文字标签 */
+  div#hexo-blog-encrypt label {
+    display: none;
+  }
+
+  /* 2. 魔法阵：外圈 (青色符文圈) */
+  div#hexo-blog-encrypt::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: 2px dashed #49b1f5; /* 主题蓝 */
+    border-radius: 50%;
+    box-shadow: 0 0 15px #49b1f5;
+    animation: magicSpin 20s linear infinite;
+    pointer-events: none; /* 让鼠标能穿透点击输入框 */
+  }
+
+  /* 3. 魔法阵：内圈 (橙色能量圈) */
+  div#hexo-blog-encrypt::after {
+    content: '';
+    position: absolute;
+    top: 15%; left: 15%;
+    width: 70%; height: 70%;
+    border: 2px solid #ff7242; /* 主题橙 */
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ff7242;
+    animation: magicSpin 10s linear infinite reverse; /* 反向旋转 */
+    pointer-events: none;
+  }
+
+  /* 4. 魔法阵：核心装饰 (三角形) */
+  div#hexo-blog-encrypt .hbe-input-container::before {
+       content: '';
+       position: absolute;
+       top: 50%; left: 50%;
+       width: 200px; height: 200px;
+       border: 1px solid rgba(255, 255, 255, 0.3);
+       transform: translate(-50%, -50%) rotate(45deg);
+       pointer-events: none;
+  }
+
+  /* 5. 美化输入框 */
+  div#hexo-blog-encrypt input {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none !important;
+    border-bottom: 2px solid #fff !important;
+    color: #fff !important;
+    text-align: center;
+    font-size: 1.2rem;
+    font-family: 'Courier New', Courier, monospace; /* 打字机字体 */
+    width: 160px !important;
+    margin-bottom: 20px !important;
+    text-shadow: 0 0 5px #49b1f5;
+    transition: all 0.3s;
+    z-index: 10;
+  }
+  div#hexo-blog-encrypt input:focus {
+    background: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 0 15px rgba(73, 177, 245, 0.5);
+    outline: none;
+  }
+
+  /* 6. 美化提交按钮 (变成魔法球) */
+  div#hexo-blog-encrypt input[type="button"] {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    background: radial-gradient(circle, #49b1f5 0%, #004e92 100%) !important;
+    color: transparent !important; /* 隐藏文字 */
+    border: 2px solid #fff !important;
+    box-shadow: 0 0 15px #49b1f5;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s;
+    z-index: 10;
+  }
+  /* 给按钮加一个图标 (需要 FontAwesome) */
+  div#hexo-blog-encrypt input[type="button"]::after {
+       font-family: "Font Awesome 6 Free";
+       content: "\f0d0"; /* 魔法棒图标 */
+       font-weight: 900;
+       color: #fff;
+       position: absolute;
+       left: 50%; top: 50%;
+       transform: translate(-50%, -50%);
+       font-size: 16px;
+       pointer-events: none;
+  }
+  div#hexo-blog-encrypt input[type="button"]:hover {
+       transform: scale(1.2);
+       box-shadow: 0 0 25px #ff7242;
+  }
+
+  /* 7. 定义旋转动画 */
+  @keyframes magicSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+<meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="triangles-wrap"><div class="triangles-eiz"></div><div class="triangles-seiz"></div><div class="triangles-sei"></div><div class="triangles-fei"></div><div class="triangles-feir"></div><div class="triangles-trei"></div><div class="triangles-dvai"></div><div class="triangles-ein"></div><div class="triangles-zero"></div></div></div><script>(()=>{
   const $loadingBox = document.getElementById('loading-box')
   const $body = document.body
   const preloader = {

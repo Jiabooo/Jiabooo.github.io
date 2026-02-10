@@ -265,41 +265,38 @@
   }
 </style>
 <script src="https://lib.baomitu.com/p5.js/1.9.0/p5.min.js"></script><style>
-  /* 1. 魔法阵容器 (层级最高，确保不被遮挡) */
+  /* 1. 魔法阵容器 (确保在星空之上) */
   div#hexo-blog-encrypt {
     position: relative;
     width: 320px;
     height: 320px;
-    margin: 80px auto;
+    margin: 60px auto; /* 上下留点距离 */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background: transparent !important;
     overflow: visible !important;
-    z-index: 9999 !important; 
+    z-index: 10; 
   }
   div#hexo-blog-encrypt label { display: none; }
 
-  /* 2. 星空天幕 (全屏覆盖，但层级受控) */
+  /* 2. 局部星空层 (改为绝对定位) */
   #universe-overlay {
-    position: fixed;
+    position: absolute; /* 绝对定位，跟随父元素 */
     top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    /* 深空渐变 */
+    width: 100%;
+    height: 100%;
+    /* 深空背景 */
     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    
-    /* 【关键修改】层级设为 100 */
-    /* 这个值足够盖住文章的白色背景，但我们会把标题设得更高 */
-    z-index: 100; 
-    
+    z-index: 1; /* 在背景之上，内容之下 */
+    border-radius: 8px; /* 适配 Butterfly 卡片圆角 */
     pointer-events: none;
-    transition: opacity 1.5s ease-in-out;
+    transition: opacity 1.5s ease;
     opacity: 1;
   }
 
-  /* 星星点缀 */
+  /* 星星动画 */
   #universe-overlay::after {
     content: "";
     position: absolute;
@@ -320,14 +317,7 @@
     100% { opacity: 0.3; transform: translateY(-20px); }
   }
 
-  /* 3. 【核心修改】强制提升页头(标题栏)的层级 */
-  #page-header {
-     position: relative;
-     /* 设置为 101，比星空(100)高，所以标题会显示在星空上面 */
-     z-index: 101 !important; 
-  }
-
-  /* 4. 画布容器 */
+  /* 3. 画布容器 */
   #magic-canvas-container {
     position: absolute;
     top: 50%; left: 50%;
@@ -337,7 +327,7 @@
     pointer-events: none;
   }
 
-  /* 5. 输入框美化 */
+  /* 4. 输入框样式 */
   div#hexo-blog-encrypt input {
     background: rgba(0, 20, 40, 0.6) !important;
     border: 1px solid rgba(0, 196, 182, 0.4) !important;
@@ -358,7 +348,7 @@
      box-shadow: 0 0 15px rgba(0, 196, 182, 0.6);
   }
 
-  /* 6. 按钮美化 */
+  /* 5. 按钮样式 */
   div#hexo-blog-encrypt input[type="button"] {
     width: 50px !important;
     height: 50px !important;
@@ -389,34 +379,48 @@
   import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
 
   function initMagicScene() {
-    const container = document.getElementById('hexo-blog-encrypt');
-    if (!container) return; 
+    const encryptBox = document.getElementById('hexo-blog-encrypt');
+    if (!encryptBox) return; // 如果没有锁，退出
 
-    // --- 星空天幕逻辑 ---
-    if (!document.getElementById('universe-overlay')) {
+    // --- 1. 智能定位白色容器逻辑 ---
+    // 在 Butterfly 中，白色容器通常是 id="page" 或者 class="post-content"
+    // 我们尝试找 encryptBox 的父元素
+    let targetContainer = document.getElementById('page') || encryptBox.parentNode;
+    
+    // 如果找到了容器，就把星空塞进去
+    if (targetContainer && !document.getElementById('universe-overlay')) {
+      // 必须把父容器设为 relative，这样星空才能 absolute 填满它
+      targetContainer.style.position = 'relative';
+      // 隐藏溢出，防止星空跑出圆角
+      targetContainer.style.overflow = 'hidden';
+
       const overlay = document.createElement('div');
       overlay.id = 'universe-overlay';
-      document.body.appendChild(overlay);
+      // 插入到容器的最前面（作为背景）
+      targetContainer.insertBefore(overlay, targetContainer.firstChild);
 
-      // 监听解锁，移除天幕
+      // 监听解锁，移除星空
       const observer = new MutationObserver(() => {
         if (!document.getElementById('hexo-blog-encrypt')) {
+          // 解锁成功，星空淡出
           overlay.style.opacity = '0'; 
           setTimeout(() => {
              if(overlay.parentNode) overlay.parentNode.removeChild(overlay);
+             // 还原父容器样式 (可选)
+             targetContainer.style.overflow = '';
           }, 1500);
           observer.disconnect();
         }
       });
-      observer.observe(document.body, { childList: true, subtree: true });
+      observer.observe(targetContainer, { childList: true, subtree: true });
     }
 
     if (document.getElementById('magic-canvas-container')) return;
 
-    // --- Three.js 逻辑 ---
+    // --- 2. Three.js 逻辑 (保持不变) ---
     const canvasDiv = document.createElement('div');
     canvasDiv.id = 'magic-canvas-container';
-    container.insertBefore(canvasDiv, container.firstChild);
+    encryptBox.insertBefore(canvasDiv, encryptBox.firstChild);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
@@ -428,7 +432,6 @@
     canvasDiv.appendChild(renderer.domElement);
 
     const textureLoader = new THREE.TextureLoader();
-    // 图片路径
     const magicTexture = textureLoader.load('/img/magic.png'); 
 
     const geometry = new THREE.PlaneGeometry(5, 5);
@@ -450,13 +453,11 @@
       if (!document.getElementById('hexo-blog-encrypt')) return;
       requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
-      
       magicMesh.rotation.z = -elapsedTime * 0.2; 
       const breath = 0.7 + Math.sin(elapsedTime * 2) * 0.3; 
       magicMesh.material.opacity = breath;
       magicMesh.rotation.x = Math.sin(elapsedTime * 0.5) * 0.1;
       magicMesh.rotation.y = Math.cos(elapsedTime * 0.5) * 0.1;
-
       renderer.render(scene, camera);
     }
     animate();

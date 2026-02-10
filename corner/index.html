@@ -277,7 +277,8 @@
     overflow: visible !important;
     z-index: 20; 
   }
-  div#hexo-blog-encrypt label { display: none; }
+  /* 隐藏原本的 label (如果有) */
+  div#hexo-blog-encrypt > label { display: none; }
 
   /* 2. 局部星空层 */
   #universe-overlay {
@@ -291,8 +292,6 @@
     pointer-events: none;
     transition: opacity 0.5s ease;
   }
-
-  /* 星星点缀 */
   #universe-overlay::after {
     content: "";
     position: absolute;
@@ -322,8 +321,8 @@
     pointer-events: none; 
   }
 
-  /* 4. 输入框样式 */
-  div#hexo-blog-encrypt input {
+  /* 4. 输入框样式 (只针对 password 类型，防止误伤其他 input) */
+  div#hexo-blog-encrypt input[type="password"] {
     background: rgba(0, 20, 40, 0.6) !important;
     border: 1px solid rgba(0, 196, 182, 0.4) !important;
     border-bottom: 2px solid #00c4b6 !important;
@@ -338,12 +337,14 @@
     backdrop-filter: blur(2px);
     transition: all 0.3s;
   }
-  div#hexo-blog-encrypt input:focus {
+  div#hexo-blog-encrypt input[type="password"]:focus {
      background: rgba(0, 20, 40, 0.9) !important;
      box-shadow: 0 0 15px rgba(0, 196, 182, 0.6);
   }
 
-  /* 5. 按钮样式 */
+  /* 5. 按钮样式 (只针对原本的提交按钮，通常是在 input password 旁边的) */
+  /* 注意：解锁后的 Encrypt again 按钮也是 .hbe-button，我们需要区分 */
+  /* 但由于我们一旦检测到解锁就移除样式，所以问题不大 */
   div#hexo-blog-encrypt input[type="button"] {
     width: 50px !important;
     height: 50px !important;
@@ -373,7 +374,7 @@
 <script type="module">
   import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
 
-  // 清理函数：还原现场
+  // 核心清理函数
   function cleanUp(targetContainer, overlay) {
       // 1. 移除星空
       if (overlay) {
@@ -386,18 +387,41 @@
           targetContainer.style.overflow = '';
           targetContainer.style.minHeight = '';
       }
+      // 3. 移除魔法阵画布 (额外保险)
+      const canvas = document.getElementById('magic-canvas-container');
+      if (canvas) canvas.remove();
+  }
+
+  // 判断是否已解锁的函数
+  function isUnlocked() {
+      const encryptBox = document.getElementById('hexo-blog-encrypt');
+      if (!encryptBox) return true; // 盒子都没了，肯定解锁了
+
+      // 特征检测 1: 里面有没有 "Encrypt again" 按钮?
+      // 您的 HTML 里那个按钮有 class "hbe-button"
+      if (encryptBox.querySelector('.hbe-button')) return true;
+
+      // 特征检测 2: 里面有没有解密后的特定内容?
+      // 比如您的日历组件 class "fancy-calendar-wrapper"
+      if (encryptBox.querySelector('.fancy-calendar-wrapper')) return true;
+      
+      // 特征检测 3: 里面有没有 input type="password"?
+      // 如果没有密码框了，那多半也是解锁了
+      if (!encryptBox.querySelector('input[type="password"]')) return true;
+
+      return false; // 还在锁定状态
   }
 
   function initMagicScene() {
-    // --- 核心判断：如果页面上本来就没有密码框，直接退出！---
     const encryptBox = document.getElementById('hexo-blog-encrypt');
-    if (!encryptBox) {
-        // 此时说明设备已经解过锁了，或者是普通文章页
-        // 不执行任何 Three.js 代码，不创建任何 DOM
+    
+    // --- 第一关：初始状态检查 ---
+    if (!encryptBox || isUnlocked()) {
+        console.log('Page already unlocked or not encrypted. Skipping magic scene.');
         return; 
     }
 
-    // --- 只有存在密码框，才继续执行下面的代码 ---
+    // --- 只有在“真·锁定”时才继续 ---
 
     // 1. 寻找父容器
     let targetContainer = encryptBox.parentNode;
@@ -429,6 +453,7 @@
 
     const canvasDiv = document.createElement('div');
     canvasDiv.id = 'magic-canvas-container';
+    // 插入到密码框容器内，input 之前
     encryptBox.insertBefore(canvasDiv, encryptBox.firstChild);
 
     const scene = new THREE.Scene();
@@ -458,18 +483,17 @@
 
     const clock = new THREE.Clock();
 
-    // 4. 渲染循环 (同时负责检测“刚刚解锁”的状态)
+    // 4. 渲染循环 (同时负责检测状态变化)
     function animate() {
-      // 检测 1: 密码框还在吗？
-      if (!document.getElementById('hexo-blog-encrypt')) {
-          // 不在了 -> 说明刚刚执行了解锁操作
+      // 【核心检测】每次渲染都检查一次“是否解锁”
+      if (isUnlocked()) {
+          // 发现解锁了！
           cleanUp(targetContainer, overlay);
-          return; // 停止渲染
+          return; // 停止循环
       }
 
       requestAnimationFrame(animate);
 
-      // 正常的动画逻辑
       const elapsedTime = clock.getElapsedTime();
       magicMesh.rotation.z = -elapsedTime * 0.2; 
       const breath = 0.7 + Math.sin(elapsedTime * 2) * 0.3; 
@@ -482,7 +506,6 @@
     animate();
   }
 
-  // 页面加载或 Pjax 切换时触发
   if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initMagicScene);
   } else {

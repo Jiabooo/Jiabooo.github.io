@@ -263,7 +263,7 @@
   }
 </style>
 <script src="https://lib.baomitu.com/p5.js/1.9.0/p5.min.js"></script><style>
-  /* 1. 容器样式 */
+  /* 1. 魔法阵容器 (最高层级) */
   div#hexo-blog-encrypt {
     position: relative;
     width: 320px;
@@ -275,21 +275,59 @@
     align-items: center;
     background: transparent !important;
     overflow: visible !important;
-    z-index: 1;
+    z-index: 99999 !important; /* 确保在星空之上 */
   }
   div#hexo-blog-encrypt label { display: none; }
 
-  /* 2. 画布容器 (位于密码框后方) */
+  /* 2. 强制星空天幕 (覆盖原背景) */
+  #universe-overlay {
+    position: fixed; /* 固定定位，铺满全屏 */
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* 深空渐变背景 */
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    z-index: 99998; /* 在魔法阵下面，但在网页内容上面 */
+    pointer-events: none; /* 让鼠标事件穿透，虽然它挡住了视觉，但不挡逻辑 */
+    transition: opacity 1.5s ease-in-out; /* 消失时的动画 */
+    opacity: 1;
+  }
+
+  /* 加点星星点缀 (纯CSS绘制) */
+  #universe-overlay::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: 
+      radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: twinkle 4s infinite;
+    opacity: 0.3;
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.3; transform: translateY(0); }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.3; transform: translateY(-20px); }
+  }
+
+  /* 3. 画布容器 */
   #magic-canvas-container {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 500px; height: 500px; /* 3D场景可以大一点 */
+    width: 500px; height: 500px;
     z-index: -1;
     pointer-events: none;
   }
 
-  /* 3. 输入框美化 (半透明科技蓝) */
+  /* 4. 输入框美化 (半透明科技蓝) */
   div#hexo-blog-encrypt input {
     background: rgba(0, 20, 40, 0.6) !important;
     border: 1px solid rgba(0, 196, 182, 0.4) !important;
@@ -310,7 +348,7 @@
      box-shadow: 0 0 15px rgba(0, 196, 182, 0.6);
   }
 
-  /* 4. 按钮美化 */
+  /* 5. 按钮美化 */
   div#hexo-blog-encrypt input[type="button"] {
     width: 50px !important;
     height: 50px !important;
@@ -338,78 +376,78 @@
 </style>
 
 <script type="module">
-  // 1. 直接从 CDN 导入 Three.js
   import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
 
   function initMagicScene() {
-    // 检查容器是否存在
     const container = document.getElementById('hexo-blog-encrypt');
-    if (!container) return;
+    if (!container) return; // 如果没有锁，直接退出
     
-    // 防止重复初始化
+    // --- 1. 创建星空天幕 ---
+    if (!document.getElementById('universe-overlay')) {
+      const overlay = document.createElement('div');
+      overlay.id = 'universe-overlay';
+      // 将天幕插入到 body 的最前面，或者直接 append
+      document.body.appendChild(overlay);
+
+      // 监听解锁，移除天幕
+      const observer = new MutationObserver(() => {
+        if (!document.getElementById('hexo-blog-encrypt')) {
+          // 解锁成功！
+          overlay.style.opacity = '0'; // 渐隐
+          setTimeout(() => {
+             if(overlay.parentNode) overlay.parentNode.removeChild(overlay);
+          }, 1500); // 等待动画结束移除 DOM
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    // 防止重复初始化 Three.js
     if (document.getElementById('magic-canvas-container')) return;
 
-    // 创建 Canvas 容器
+    // --- 2. Three.js 逻辑 ---
     const canvasDiv = document.createElement('div');
     canvasDiv.id = 'magic-canvas-container';
     container.insertBefore(canvasDiv, container.firstChild);
 
-    // --- Three.js 场景搭建 ---
-    
-    // 1. 场景
     const scene = new THREE.Scene();
-    
-    // 2. 相机
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    camera.position.z = 5; // 相机距离
+    camera.position.z = 5;
 
-    // 3. 渲染器 (开启透明背景)
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(500, 500); // 画布大小
+    renderer.setSize(500, 500);
     renderer.setPixelRatio(window.devicePixelRatio);
     canvasDiv.appendChild(renderer.domElement);
 
-    // --- 加载您的魔法阵图片 ---
     const textureLoader = new THREE.TextureLoader();
-    
-    // 【注意】请确保这里是您的图片路径，如果图片名叫 magic-circle.png 请修改这里
+    // 【注意】确保图片路径正确
     const magicTexture = textureLoader.load('/img/magic.png'); 
 
-    // 4. 创建平面物体 (Plane)
-    // 这里的 5, 5 是图片在 3D 世界中的尺寸，可以根据需要调整
     const geometry = new THREE.PlaneGeometry(5, 5);
-    
-    // 材质：使用图片作为贴图 (Map)，开启透明 (Transparent)
     const material = new THREE.MeshBasicMaterial({ 
       map: magicTexture,
       transparent: true,
       opacity: 1,
-      side: THREE.DoubleSide, // 双面可见
-      depthWrite: false,      // 防止透明遮挡问题
-      blending: THREE.AdditiveBlending // 叠加混合模式，让发光感更强
+      side: THREE.DoubleSide,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending 
     });
 
     const magicMesh = new THREE.Mesh(geometry, material);
     scene.add(magicMesh);
 
-    // --- 动画循环 ---
     const clock = new THREE.Clock();
 
     function animate() {
+      if (!document.getElementById('hexo-blog-encrypt')) return;
+
       requestAnimationFrame(animate);
-      
       const elapsedTime = clock.getElapsedTime();
-
-      // 1. 旋转效果 (Z轴旋转)
-      magicMesh.rotation.z = -elapsedTime * 0.2; // 负数代表顺时针，0.2 是速度
-
-      // 2. 光暗渐变 (呼吸效果)
-      // 使用 sin 函数让透明度在 0.4 到 1.0 之间循环
+      
+      magicMesh.rotation.z = -elapsedTime * 0.2; 
       const breath = 0.7 + Math.sin(elapsedTime * 2) * 0.3; 
       magicMesh.material.opacity = breath;
-
-      // 3. 微微的 3D 浮动感 (可选)
-      // 让魔法阵稍微有一些倾斜的摆动，增加立体感
       magicMesh.rotation.x = Math.sin(elapsedTime * 0.5) * 0.1;
       magicMesh.rotation.y = Math.cos(elapsedTime * 0.5) * 0.1;
 
@@ -419,8 +457,6 @@
     animate();
   }
 
-  // 页面加载完成后执行
-  // 兼容 Pjax (无刷新跳转)
   if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initMagicScene);
   } else {

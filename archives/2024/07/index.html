@@ -53,7 +53,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2026-02-10 13:22:57'
+  postUpdate: '2026-02-10 13:26:01'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -151,153 +151,179 @@
       }
       detectApple()
     })(window)</script><style>
-  /* 1. 容器基础设置 */
+  /* 1. 容器：深邃的黑暗基底 */
   div#hexo-blog-encrypt {
     position: relative;
-    width: 300px;  /* 稍微加大一点尺寸 */
-    height: 300px;
+    width: 320px;  /* 稍微加大尺寸以容纳复杂结构 */
+    height: 320px;
     margin: 80px auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* 添加一个深色的背景基调，增强对比度 */
-    background: radial-gradient(circle, rgba(30,30,30,0.8) 0%, rgba(0,0,0,0) 70%) !important;
-    overflow: visible;
+    background: #000 !important; /* 纯黑背景 */
     border-radius: 50%;
+    overflow: visible; /* 让光芒溢出 */
+    /* 全局金色辉光滤镜，增加朦胧感 */
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
   }
-  /* 隐藏 "Password" 文字标签 */
   div#hexo-blog-encrypt label { display: none; }
 
-  /* 2. 魔法阵：外圈 (古金符文圈) - 慢速旋转 */
+  /* ================= 魔法阵结构层 ================= */
+
+  /* 2. 最外层：大符文圆环 (::before) */
   div#hexo-blog-encrypt::before {
     content: '';
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    /* 使用双线边框模拟复杂的符文轨道 */
-    border: 4px double #d4af37; /* 金属金 */
+    border: 3px solid #ffd700; /* 亮金实线 */
     border-radius: 50%;
-    /* 多层次的金色光晕 */
+    /* 强烈的内外发光 */
     box-shadow: 
-      0 0 20px rgba(212, 175, 55, 0.5), 
-      inset 0 0 20px rgba(212, 175, 55, 0.3);
-    /* 添加一点纹理感 */
-    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(212, 175, 55, 0.1) 10px, rgba(212, 175, 55, 0.1) 20px);
-    animation: magicSpin 25s linear infinite;
+      0 0 30px rgba(255, 215, 0, 0.6), 
+      inset 0 0 20px rgba(215, 185, 55, 0.4);
+    /* 模拟符文纹理的杂色背景 */
+    background-image: repeating-conic-gradient(rgba(255, 215, 0, 0.1) 0% 2%, transparent 2% 4%);
+    animation: magicSpin 30s linear infinite; /* 慢速旋转 */
     pointer-events: none; 
   }
 
-  /* 3. 魔法阵：内圈 (亮金能量圈) - 快速反向旋转 */
+  /* 3. 核心层：正方形和四个小圆阵的容器 (::after) */
+  /* 这个层负责带着内部结构一起反向旋转 */
   div#hexo-blog-encrypt::after {
     content: '';
     position: absolute;
-    top: 12%; left: 12%;
-    width: 76%; height: 76%;
-    border: 2px dashed #ffd700; /* 亮金色虚线 */
-    border-top-color: transparent; /* 製造缺口感 */
-    border-bottom-color: transparent;
+    top: 5%; left: 5%;
+    width: 90%; height: 90%;
     border-radius: 50%;
-    /* 更亮的核心光芒 */
-    box-shadow: 0 0 15px #ffd700, 0 0 30px rgba(255, 215, 0, 0.6);
-    filter: drop-shadow(0 0 5px #ffd700);
-    animation: magicSpin 12s linear infinite reverse; 
+    animation: magicSpin 20s linear infinite reverse; /* 中速反向旋转 */
     pointer-events: none;
   }
 
-  /* 4. 魔法阵：核心几何装饰 (六芒星结构) */
-  div#hexo-blog-encrypt .hbe-input-container::before,
+  /* 4. 核心结构绘制 (利用输入框容器的伪元素) */
+  div#hexo-blog-encrypt .hbe-input-container {
+      position: absolute;
+      width: 100%; height: 100%;
+      top: 0; left: 0;
+      pointer-events: none; /* 不挡住输入 */
+  }
+
+  /* -> 核心正方形 (菱形) */
+  div#hexo-blog-encrypt .hbe-input-container::before {
+       content: '';
+       position: absolute;
+       top: 50%; left: 50%;
+       width: 70%; height: 70%;
+       border: 2px solid #ffd700;
+       /* 旋转45度变成菱形，并居中 */
+       transform: translate(-50%, -50%) rotate(45deg);
+       box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  }
+
+  /* -> 核心五芒星 (用 clip-path 绘制) */
   div#hexo-blog-encrypt .hbe-input-container::after {
        content: '';
        position: absolute;
        top: 50%; left: 50%;
-       width: 220px; height: 220px;
-       border: 1px solid rgba(255, 215, 0, 0.4); /* 细金线 */
-       pointer-events: none;
-       box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
-  }
-  /* 正三角 */
-  div#hexo-blog-encrypt .hbe-input-container::before {
-      transform: translate(-50%, -50%) rotate(0deg);
-  }
-  /* 倒三角，组成六芒星 */
-  div#hexo-blog-encrypt .hbe-input-container::after {
-      transform: translate(-50%, -50%) rotate(60deg);
+       width: 68%; height: 68%;
+       background: rgba(255, 215, 0, 0.2); /* 半透明金色填充 */
+       /* 五角星的裁剪路径 */
+       clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+       transform: translate(-50%, -50%);
+       /* 给五芒星边缘加发光描边效果 (通过滤镜模拟) */
+       filter: drop-shadow(0 0 5px #ffd700);
   }
 
-  /* 5. 美化输入框 (黑底金字) */
+  /* -> 四个角落的小五芒星阵 (极其复杂的定位) */
+  /* 由于伪元素数量限制，这里用四个小光环来模拟图中的四个小法阵 */
+  /* 利用 box-shadow 生成四个影子圆环 */
+  div#hexo-blog-encrypt .hbe-input-container {
+      /* 定义小圆环的大小和颜色 */
+      --small-circle-size: 60px;
+      --small-circle-color: rgba(255, 215, 0, 0.8);
+      /* 利用多重阴影在四个角落生成圆环 */
+      box-shadow: 
+          /* 上 */ 0 calc(-1 * var(--small-circle-size) * 1.8) 0 -48px var(--small-circle-color),
+          /* 下 */ 0 calc(var(--small-circle-size) * 1.8) 0 -48px var(--small-circle-color),
+          /* 左 */ calc(-1 * var(--small-circle-size) * 1.8) 0 0 -48px var(--small-circle-color),
+          /* 右 */ calc(var(--small-circle-size) * 1.8) 0 0 -48px var(--small-circle-color);
+      /* 让这些小圆环随核心层一起旋转 */
+      animation: magicSpin 20s linear infinite reverse;
+  }
+
+
+  /* ================= 输入交互层 ================= */
+
+  /* 5. 美化输入框 (黑底金字，悬浮感) */
   div#hexo-blog-encrypt input {
-    /* 深色背景衬托金字 */
-    background: rgba(20, 20, 20, 0.8) !important;
-    border: 1px solid #bf953f !important; /* 古铜金边框 */
-    border-bottom: 3px solid #ffd700 !important; /* 亮金底部重點 */
-    color: #ffd700 !important; /* 亮金文字 */
+    background: rgba(0, 0, 0, 0.8) !important;
+    border: 2px solid #d4af37 !important; /* 暗金边框 */
+    border-bottom: 4px solid #ffd700 !important; /* 亮金底部 */
+    color: #ffd700 !important;
     text-align: center;
-    font-size: 1.3rem;
-    font-family: 'Cinzel', 'Times New Roman', serif; /* 更有古典魔幻感的字体 */
-    letter-spacing: 2px;
-    width: 180px !important;
-    margin-bottom: 25px !important;
-    /* 文字辉光 */
-    text-shadow: 0 0 8px #d4af37;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    font-size: 1.4rem;
+    font-family: 'Cinzel', serif; /* 古典字体 */
+    letter-spacing: 3px;
+    width: 200px !important;
+    margin-bottom: 30px !important;
+    /* 强烈的金色文字光辉 */
+    text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     transition: all 0.3s;
     z-index: 10;
     border-radius: 4px;
+    pointer-events: auto; /* 恢复鼠标事件 */
   }
-  /* 输入框聚焦狀態 */
   div#hexo-blog-encrypt input:focus {
-    background: rgba(40, 40, 40, 0.9) !important;
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.7), inset 0 0 15px rgba(0,0,0,0.8);
+    background: rgba(20, 20, 20, 0.9) !important;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
     border-color: #ffd700 !important;
     outline: none;
   }
 
-  /* 6. 美化提交按钮 (贤者之石/核心法球) */
+  /* 6. 美化提交按钮 (核心能量法球) */
   div#hexo-blog-encrypt input[type="button"] {
-    width: 50px !important;
-    height: 50px !important;
+    width: 60px !important;
+    height: 60px !important;
     border-radius: 50% !important;
-    /* 奢华的黑金渐变 */
-    background: radial-gradient(ellipse at center, #ffd700 0%, #d4af37 40%, #8c6420 100%) !important;
+    /* 黑金径向渐变 */
+    background: radial-gradient(circle at 30% 30%, #ffd700 0%, #d4af37 40%, #5e440f 100%) !important;
     color: transparent !important;
-    border: 2px solid #fff8dc !important; /* 象牙白边框增加层次 */
-    /* 强烈的金色光辉 */
+    border: 3px solid #ffd700 !important;
+    /* 极强的发光效果，模拟能量核心 */
     box-shadow: 
-      0 0 20px #d4af37, 
-      0 0 40px rgba(255, 215, 0, 0.5),
-      inset 0 0 10px rgba(255, 255, 255, 0.3);
+      0 0 30px #ffd700, 
+      0 0 60px rgba(255, 215, 0, 0.6),
+      inset 0 0 20px rgba(255, 255, 255, 0.5);
     cursor: pointer;
     position: relative;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.4s ease-in-out;
     z-index: 10;
+    pointer-events: auto;
   }
-  /* 按钮图标 (使用深色以产生雕刻感) */
+  /* 按钮图标 (金色钥匙) */
   div#hexo-blog-encrypt input[type="button"]::after {
        font-family: "Font Awesome 6 Free";
-       content: "\f084"; /* 改用“钥匙”图标 (fa-key) 更符合解锁主题 */
+       content: "\f084"; 
        font-weight: 900;
-       color: #3e2c12; /* 深棕色，像刻在金子上的痕迹 */
-       text-shadow: 1px 1px 1px rgba(255,255,255,0.4); /* 雕刻高光 */
+       color: #2a1e08; /* 深色刻痕 */
+       text-shadow: 1px 1px 2px rgba(255,215,0, 0.8); /* 边缘高光 */
        position: absolute;
        left: 50%; top: 50%;
        transform: translate(-50%, -50%) rotate(-45deg);
-       font-size: 20px;
+       font-size: 24px;
        pointer-events: none;
-       transition: all 0.3s;
   }
-  /* 按钮悬停效果 */
+  /* 悬停特效：爆发和旋转 */
   div#hexo-blog-encrypt input[type="button"]:hover {
-       transform: scale(1.15) rotate(180deg); /* 悬停时旋转并放大 */
+       transform: scale(1.2) rotate(360deg);
        box-shadow: 
-          0 0 40px #ffd700, 
-          0 0 80px rgba(255, 215, 0, 0.8);
-  }
-  div#hexo-blog-encrypt input[type="button"]:hover::after {
-      color: #5c401a;
+          0 0 50px #ffd700, 
+          0 0 100px #ffd700; /* 光芒爆发 */
   }
 
-  /* 7. 定义旋转动画 */
+  /* 旋转动画 */
   @keyframes magicSpin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -324,7 +350,7 @@
     document.addEventListener('pjax:send', () => { preloader.initLoading() })
     document.addEventListener('pjax:complete', () => { preloader.endLoading() })
   }
-})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/corner/"><i class="fa-fw fas fa-folder-open"></i><span> Our Corner</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/img/small_logo.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Jiabooo的妙妙屋"><span class="site-name">Jiabooo的妙妙屋</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/corner/"><i class="fa-fw fas fa-folder-open"></i><span> Our Corner</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">July 2024</h1></div></header><main class="layout" id="content-inner"><div id="archive"><div class="article-sort-title">Articles - 1</div><div class="article-sort"><div class="article-sort-item year">2024</div><div class="article-sort-item no-article-cover"><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2024-07-19T09:37:12.851Z" title="Created 2024-07-19 17:37:12">2024-07-19</time></div><a class="article-sort-item-title" href="/2024/07/19/hello-world/" title="Hello World">Hello World</a></div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jiabooo</div><div class="author-info__description">渺小启程，璀璨落幕</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jiaboo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Jiabooo/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://blog.csdn.net/weixin_63767221" target="_blank" title="CSDN"><i class="fa fa-book-open"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=826557522&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:826557522@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><center>主域名：<br><a href="https://www.jiabooo.top">www.jiabooo.top</a><br><p>欢迎大家访问我的小站。如果想技术交流，可以给我发email。</p><a href="mailto:826557522@qq.com">📬：826557522@qq.com<b></center></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/19/hello-world/" title="Hello World">Hello World</a><time datetime="2024-07-19T09:37:12.851Z" title="Created 2024-07-19 17:37:12">2024-07-19</time></div></div></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">July 2024</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">1</div></div><div class="webinfo-item"><div class="item-name">Runtime :</div><div class="item-count" id="runtimeshow" data-publishDate="2024-07-18T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Update :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-02-10T05:22:57.679Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2026 By Jiabooo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><p>希望自己的日积月累，终能成他人的望尘莫及</p><p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><div id="footer-waves" style="display: none;">
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/corner/"><i class="fa-fw fas fa-folder-open"></i><span> Our Corner</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/img/small_logo.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Jiabooo的妙妙屋"><span class="site-name">Jiabooo的妙妙屋</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/corner/"><i class="fa-fw fas fa-folder-open"></i><span> Our Corner</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">July 2024</h1></div></header><main class="layout" id="content-inner"><div id="archive"><div class="article-sort-title">Articles - 1</div><div class="article-sort"><div class="article-sort-item year">2024</div><div class="article-sort-item no-article-cover"><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2024-07-19T09:37:12.851Z" title="Created 2024-07-19 17:37:12">2024-07-19</time></div><a class="article-sort-item-title" href="/2024/07/19/hello-world/" title="Hello World">Hello World</a></div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Jiabooo</div><div class="author-info__description">渺小启程，璀璨落幕</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jiaboo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Jiabooo/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://blog.csdn.net/weixin_63767221" target="_blank" title="CSDN"><i class="fa fa-book-open"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=826557522&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:826557522@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><center>主域名：<br><a href="https://www.jiabooo.top">www.jiabooo.top</a><br><p>欢迎大家访问我的小站。如果想技术交流，可以给我发email。</p><a href="mailto:826557522@qq.com">📬：826557522@qq.com<b></center></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/19/hello-world/" title="Hello World">Hello World</a><time datetime="2024-07-19T09:37:12.851Z" title="Created 2024-07-19 17:37:12">2024-07-19</time></div></div></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">July 2024</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">1</div></div><div class="webinfo-item"><div class="item-name">Runtime :</div><div class="item-count" id="runtimeshow" data-publishDate="2024-07-18T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Update :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-02-10T05:26:01.911Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2026 By Jiabooo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><p>希望自己的日积月累，终能成他人的望尘莫及</p><p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ ">&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><div id="footer-waves" style="display: none;">
   <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
     <defs>
       <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />

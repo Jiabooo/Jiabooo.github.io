@@ -270,7 +270,7 @@
     position: relative;
     width: 320px;
     height: 320px;
-    margin: 60px auto; /* 上下留点距离 */
+    margin: 60px auto; 
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -281,18 +281,18 @@
   }
   div#hexo-blog-encrypt label { display: none; }
 
-  /* 2. 局部星空层 (改为绝对定位) */
+  /* 2. 局部星空层 (绝对定位填满父容器) */
   #universe-overlay {
-    position: absolute; /* 绝对定位，跟随父元素 */
+    position: absolute; 
     top: 0; left: 0;
     width: 100%;
     height: 100%;
     /* 深空背景 */
     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    z-index: 1; /* 在背景之上，内容之下 */
-    border-radius: 8px; /* 适配 Butterfly 卡片圆角 */
+    z-index: 1; 
+    border-radius: 8px; /* 适配圆角 */
     pointer-events: none;
-    transition: opacity 1.5s ease;
+    transition: opacity 1.5s ease; /* 还原时的淡出动画 */
     opacity: 1;
   }
 
@@ -380,44 +380,61 @@
 
   function initMagicScene() {
     const encryptBox = document.getElementById('hexo-blog-encrypt');
-    if (!encryptBox) return; // 如果没有锁，退出
+    if (!encryptBox) return; 
 
-    // --- 1. 智能定位白色容器逻辑 ---
-    // 在 Butterfly 中，白色容器通常是 id="page" 或者 class="post-content"
-    // 我们尝试找 encryptBox 的父元素
-    let targetContainer = document.getElementById('page') || encryptBox.parentNode;
+    // --- 1. 智能定位 + 星空注入 + 自动还原逻辑 ---
+    // 尝试寻找文章内容的白色父容器
+    let targetContainer = document.getElementById('article-container') || 
+                          document.querySelector('.post-content') || 
+                          encryptBox.parentNode;
     
-    // 如果找到了容器，就把星空塞进去
     if (targetContainer && !document.getElementById('universe-overlay')) {
-      // 必须把父容器设为 relative，这样星空才能 absolute 填满它
+      // 【准备工作】
+      // 记录原始样式，以便还原 (虽然通常只需清空即可，但这是好习惯)
+      const originalPosition = targetContainer.style.position;
+      const originalOverflow = targetContainer.style.overflow;
+
+      // 设置定位基准，并隐藏溢出（把星空关在笼子里）
       targetContainer.style.position = 'relative';
-      // 隐藏溢出，防止星空跑出圆角
       targetContainer.style.overflow = 'hidden';
 
+      // 创建星空层
       const overlay = document.createElement('div');
       overlay.id = 'universe-overlay';
-      // 插入到容器的最前面（作为背景）
+      // 插入到最底层，作为背景
       targetContainer.insertBefore(overlay, targetContainer.firstChild);
 
-      // 监听解锁，移除星空
+      // 【监听解锁事件】
       const observer = new MutationObserver(() => {
+        // 检测密码框是否被移除了
         if (!document.getElementById('hexo-blog-encrypt')) {
-          // 解锁成功，星空淡出
+          // -> 确实解锁了！
+
+          // 1. 星空淡出 (视觉还原)
           overlay.style.opacity = '0'; 
+
+          // 2. 延迟移除 DOM 并还原容器样式 (结构还原)
           setTimeout(() => {
              if(overlay.parentNode) overlay.parentNode.removeChild(overlay);
-             // 还原父容器样式 (可选)
-             targetContainer.style.overflow = '';
-          }, 1500);
+             
+             // 【核心还原步骤】
+             // 必须把 overflow 还原，否则长文章会被切断！
+             targetContainer.style.overflow = originalOverflow || '';
+             targetContainer.style.position = originalPosition || '';
+             
+          }, 1500); // 等待淡出动画结束
+
+          // 停止监听
           observer.disconnect();
         }
       });
+      // 开始监听
       observer.observe(targetContainer, { childList: true, subtree: true });
     }
 
     if (document.getElementById('magic-canvas-container')) return;
 
-    // --- 2. Three.js 逻辑 (保持不变) ---
+    // --- 2. Three.js 魔法阵逻辑 ---
     const canvasDiv = document.createElement('div');
     canvasDiv.id = 'magic-canvas-container';
     encryptBox.insertBefore(canvasDiv, encryptBox.firstChild);
@@ -432,6 +449,7 @@
     canvasDiv.appendChild(renderer.domElement);
 
     const textureLoader = new THREE.TextureLoader();
+    // 图片路径
     const magicTexture = textureLoader.load('/img/magic.png'); 
 
     const geometry = new THREE.PlaneGeometry(5, 5);
@@ -453,11 +471,13 @@
       if (!document.getElementById('hexo-blog-encrypt')) return;
       requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
+      
       magicMesh.rotation.z = -elapsedTime * 0.2; 
       const breath = 0.7 + Math.sin(elapsedTime * 2) * 0.3; 
       magicMesh.material.opacity = breath;
       magicMesh.rotation.x = Math.sin(elapsedTime * 0.5) * 0.1;
       magicMesh.rotation.y = Math.cos(elapsedTime * 0.5) * 0.1;
+
       renderer.render(scene, camera);
     }
     animate();

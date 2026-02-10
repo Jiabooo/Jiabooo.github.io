@@ -277,11 +277,11 @@
     align-items: center;
     background: transparent !important;
     overflow: visible !important;
-    z-index: 20; /* 必须比星空高 */
+    z-index: 20; /* 保证在星空之上 */
   }
   div#hexo-blog-encrypt label { display: none; }
 
-  /* 2. 局部星空层 */
+  /* 2. 局部星空层 (绝对定位) */
   #universe-overlay {
     position: absolute; 
     top: 0; left: 0;
@@ -289,9 +289,10 @@
     height: 100%;
     /* 深空背景 */
     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    z-index: 10; /* 盖在白色文章背景上 */
+    z-index: 10; /* 盖在白色背景上 */
     border-radius: 8px; 
-    pointer-events: none;
+    pointer-events: none; /* 禁止交互 */
+    transition: opacity 0.8s ease; /* 优雅淡出 */
   }
 
   /* 星星点缀 */
@@ -321,7 +322,7 @@
     transform: translate(-50%, -50%);
     width: 500px; height: 500px;
     z-index: -1;
-    pointer-events: none;
+    pointer-events: none; /* 彻底禁止交互 */
   }
 
   /* 4. 输入框样式 */
@@ -375,74 +376,58 @@
 <script type="module">
   import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
 
-  // 全局变量存储定时器 ID，方便清除
-  window.magicInterval = null;
+  // 核心清理函数
+  function cleanUpMagic(targetContainer, overlay) {
+      console.log('Hexo Encrypt unlocked. Cleaning up...');
+      
+      // 1. 移除星空
+      if (overlay) {
+          overlay.style.opacity = '0'; // 先淡出
+          setTimeout(() => {
+              if (overlay.parentNode) overlay.remove();
+          }, 800);
+      }
+
+      // 2. 还原父容器样式 (恢复白底和滚动条)
+      if (targetContainer) {
+          targetContainer.style.position = '';
+          targetContainer.style.overflow = '';
+          targetContainer.style.minHeight = '';
+      }
+  }
 
   function initMagicScene() {
-    // 清除可能存在的旧定时器
-    if (window.magicInterval) clearInterval(window.magicInterval);
-
     const encryptBox = document.getElementById('hexo-blog-encrypt');
-    // 如果没有密码框，说明不需要执行
     if (!encryptBox) return; 
 
-    // --- 1. 寻找父容器 (白色卡片) ---
-    // Butterfly 主题的文章容器通常是 #article-container 或 .post-content
-    // 我们直接找 encryptBox 的父节点，这样最准
+    // --- 1. 定位容器 & 插入星空 ---
     let targetContainer = encryptBox.parentNode;
-    
-    // 为了确保兼容性，尝试往上找几层，找到那个背景是白色的主容器
-    // (简单的判断：如果父节点是 body 就不找了)
+    // 向上查找主要的白色文章卡片
     while (targetContainer && targetContainer.tagName !== 'BODY' && !targetContainer.classList.contains('post-content') && targetContainer.id !== 'article-container') {
        targetContainer = targetContainer.parentNode;
     }
-    // 如果没找到特定的 class，就回退到直接父节点
     if (!targetContainer || targetContainer.tagName === 'BODY') {
        targetContainer = encryptBox.parentNode;
     }
 
+    let overlay = null;
     if (targetContainer) {
-      // 设置父容器样式，让星空能定位
       targetContainer.style.position = 'relative';
-      targetContainer.style.minHeight = '400px'; // 保证锁定时有高度
-      // 暂时隐藏溢出，防止圆角穿帮
       targetContainer.style.overflow = 'hidden'; 
+      targetContainer.style.minHeight = '400px';
 
-      // 插入星空
       if (!document.getElementById('universe-overlay')) {
-        const overlay = document.createElement('div');
+        overlay = document.createElement('div');
         overlay.id = 'universe-overlay';
         targetContainer.insertBefore(overlay, targetContainer.firstChild);
+      } else {
+        overlay = document.getElementById('universe-overlay');
       }
-
-      // --- 2. 启动“哨兵”定时器 (核心修改) ---
-      window.magicInterval = setInterval(() => {
-         // 检查密码框是否还存在
-         const box = document.getElementById('hexo-blog-encrypt');
-         
-         if (!box) {
-           // -> 密码框不见了！说明解锁成功！
-           
-           console.log('Hexo Encrypt Unlocked detected!');
-           
-           // 1. 移除星空
-           const overlay = document.getElementById('universe-overlay');
-           if (overlay) overlay.remove();
-
-           // 2. 还原父容器样式 (至关重要)
-           targetContainer.style.position = '';
-           targetContainer.style.minHeight = '';
-           targetContainer.style.overflow = ''; // 还原 overflow，让长文章显示
-
-           // 3. 停止哨兵
-           clearInterval(window.magicInterval);
-         }
-      }, 200); // 每 0.2 秒检查一次，人眼几乎感觉不到延迟
     }
 
     if (document.getElementById('magic-canvas-container')) return;
 
-    // --- 3. Three.js 魔法阵 (保持不变) ---
+    // --- 2. Three.js 逻辑 ---
     const canvasDiv = document.createElement('div');
     canvasDiv.id = 'magic-canvas-container';
     encryptBox.insertBefore(canvasDiv, encryptBox.firstChild);
@@ -474,13 +459,21 @@
 
     const clock = new THREE.Clock();
 
+    // --- 3. 渲染循环 (兼职“自动哨兵”) ---
     function animate() {
-      // 如果解锁了，停止渲染动画
-      if (!document.getElementById('hexo-blog-encrypt')) return;
+      // 【核心检测】每一帧都检查密码框是否还在
+      if (!document.getElementById('hexo-blog-encrypt')) {
+          // 如果密码框不在了，说明解锁成功
+          // 执行清理
+          cleanUpMagic(targetContainer, overlay);
+          // 停止动画循环，释放内存
+          return; 
+      }
 
       requestAnimationFrame(animate);
+
+      // 正常的动画逻辑
       const elapsedTime = clock.getElapsedTime();
-      
       magicMesh.rotation.z = -elapsedTime * 0.2; 
       const breath = 0.7 + Math.sin(elapsedTime * 2) * 0.3; 
       magicMesh.material.opacity = breath;

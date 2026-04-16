@@ -7,7 +7,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.jiabooo.top/img/head.jpg">
 <meta property="article:published_time" content="2026-04-16T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-16T09:28:44.177Z">
+<meta property="article:modified_time" content="2026-04-16T12:38:44.013Z">
 <meta property="article:author" content="Jiabooo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.jiabooo.top/img/head.jpg"><link rel="shortcut icon" href="/img/small_logo32.ico"><link rel="canonical" href="https://www.jiabooo.top/100-things/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
@@ -55,7 +55,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2026-04-16 17:28:44'
+  postUpdate: '2026-04-16 20:38:44'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -186,7 +186,6 @@
   .scratch-wall-header h2 { 
     font-family: "Dancing Script", cursive, "微软雅黑"; 
     font-size: 2.2rem; 
-    /* 用青色到橙色的渐变代替死板的纯色，更有灵动感 */
     background: linear-gradient(135deg, #49b1f5 0%, #ff7242 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -194,7 +193,6 @@
   }
   .scratch-wall-header p { color: #888; font-size: 1.05rem; font-style: italic; letter-spacing: 1px; }
 
-  /* 网格布局 */
   .scratch-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -202,7 +200,6 @@
     padding: 10px;
   }
 
-  /* 每一张刮刮卡 */
   .scratch-card {
     position: relative;
     height: 180px;
@@ -222,10 +219,26 @@
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     z-index: 1; display: flex; flex-direction: column; justify-content: flex-end;
   }
+  
+  /* 有照片时的样式 */
   .card-content img {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     object-fit: cover; z-index: -1; filter: brightness(0.85);
   }
+  
+  /* 【新增】：无照片时的渐变兜底背景 */
+  .no-img-bg {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    /* 使用你们博客的主题色渐变 */
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+    z-index: -1; 
+    display: flex; justify-content: center; align-items: center;
+  }
+  /* 背景中心的一颗半透明大爱心点缀 */
+  .no-img-bg i {
+    font-size: 5rem; color: rgba(255,255,255,0.4);
+  }
+
   .card-info {
     padding: 15px; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
     color: white; text-align: left; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
@@ -237,7 +250,7 @@
   .not-done-hint { color: #888; font-size: 1rem; font-weight: bold; z-index: 1; padding: 20px;}
   .not-done-hint i { font-size: 1.8rem; margin-bottom: 12px; color: #d0d7de; display: block;}
 
-  /* --- 顶层：刮刮乐涂层 (Canvas) --- */
+  /* --- 顶层：刮刮乐涂层 --- */
   .scratch-canvas {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     z-index: 5; cursor: pointer;
@@ -247,13 +260,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-// ==========================================
-  // 📝 100件恋爱小事 任务数据库
-  // 打卡指南：
-  // 1. 将 completed: false 改为 completed: true
-  // 2. 将 date 里的 "待解锁" 改为打卡日期 (例如: "2026-05-20")
-  // 3. 在 img 的引号里填入你们的照片链接
-  // ==========================================
   const tasks = [
     { id: "01", title: "一起看一场绝美的日出", date: "待解锁", img: "", completed: false },
     { id: "02", title: "在海边手牵手散步", date: "待解锁", img: "", completed: false },
@@ -373,10 +379,19 @@ document.addEventListener('DOMContentLoaded', function() {
     card.className = 'scratch-card';
     
     let bottomContent = '';
+    
     if (task.completed) {
+      // 判断 img 里面有没有填链接
+      const hasImg = task.img && task.img.trim() !== '';
+      
+      // 如果有链接，显示相片；如果没有，显示好看的粉色渐变和半透明爱心
+      const bgContent = hasImg 
+        ? `<img src="${task.img}" alt="${task.title}">`
+        : `<div class="no-img-bg"><i class="fas fa-heart"></i></div>`;
+
       bottomContent = `
         <div class="card-content">
-          <img src="${task.img}" alt="${task.title}">
+          ${bgContent}
           <div class="card-info">
             <h4>${task.id}. ${task.title}</h4>
             <span><i class="fas fa-clock" style="color:#00c4b6; font-size: 0.75rem;"></i> ${task.date}</span>
@@ -428,7 +443,6 @@ document.addEventListener('DOMContentLoaded', function() {
       
       ctx.fillStyle = "#999";
       ctx.font = "13px 'Microsoft YaHei', sans-serif";
-      // 将提示文案改得更具画面感
       ctx.fillText(`轻轻划开，重逢那天的风和我们`, canvas.width / 2, canvas.height / 2 + 22);
 
       ctx.globalCompositeOperation = 'destination-out';

@@ -7,7 +7,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.jiabooo.top/img/head.jpg">
 <meta property="article:published_time" content="2026-04-16T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-19T13:31:56.209Z">
+<meta property="article:modified_time" content="2026-04-19T13:37:04.817Z">
 <meta property="article:author" content="Jiabooo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.jiabooo.top/img/head.jpg"><link rel="shortcut icon" href="/img/small_logo32.ico"><link rel="canonical" href="https://www.jiabooo.top/100-things/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
@@ -55,7 +55,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2026-04-19 21:31:56'
+  postUpdate: '2026-04-19 21:37:04'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -488,8 +488,8 @@ document.addEventListener('DOMContentLoaded', function() {
     { id: "100", title: "兑现所有的承诺，一起慢慢变老", date: "待解锁", img: "", completed: false }
   ];
 
-  // ==========================================
-  // 计算进度与滚动动画
+// ==========================================
+  // 计算进度与滚动动画 (防偷跑版)
   // ==========================================
   const totalTasks = tasks.length;
   const completedTasksCount = tasks.filter(task => task.completed).length;
@@ -511,14 +511,30 @@ document.addEventListener('DOMContentLoaded', function() {
     window.requestAnimationFrame(step);
   }
 
+  // 【核心修复】：使用视口观察者，确保进度条被看到了才开始动画
+  const progressContainer = document.querySelector('.progress-container');
   const countElement = document.getElementById('completed-count');
-  animateValue(countElement, 0, completedTasksCount, 3000);
+  const progressBarFill = document.getElementById('progress-bar-fill');
 
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      document.getElementById('progress-bar-fill').style.width = progressPercent + '%';
-    });
-  });
+  const observer = new IntersectionObserver((entries) => {
+    // 当进度条元素出现在屏幕上时 (isIntersecting 为 true)
+    if (entries[0].isIntersecting) {
+      
+      // 故意延迟 500 毫秒执行，留出时间让眼睛聚焦，增加仪式感
+      setTimeout(() => {
+        // 执行 3秒 (3000ms) 的数字滚动动画
+        animateValue(countElement, 0, completedTasksCount, 3000); 
+        // 触发进度条伸展动画
+        progressBarFill.style.width = progressPercent + '%'; 
+      }, 500);
+      
+      // 动画只执行一次，执行完就取消监听
+      observer.disconnect(); 
+    }
+  }, { threshold: 0.1 }); // 只要进度条露出 10% 就准备触发
+
+  // 开始监视进度条
+  observer.observe(progressContainer);
 
   // ==========================================
   // 渲染卡片与刮刮乐逻辑

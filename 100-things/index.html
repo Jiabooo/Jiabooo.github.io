@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>100 件恋爱小事 | Jiabooo的妙妙屋</title><meta name="author" content="Jiabooo"><meta name="copyright" content="Jiabooo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="✨ 我们一起完成的 100 件浪漫小事   用指尖抹去时间的灰尘，重温那些闪闪发光的日子           我们已经完成了 0 &#x2F; 100 件小事啦                                .scratch-wall-header { text-align: center; margin-bottom: 40px; position: relative; z-ind">
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>100 件恋爱小事 | Jiabooo的妙妙屋</title><meta name="author" content="Jiabooo"><meta name="copyright" content="Jiabooo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="✨ 我们一起完成的 100 件浪漫小事   用指尖抹去时间的灰尘，重温那些闪闪发光的日子           我们已经完成了 0 &#x2F; 100 件小事啦                                                                                                 .scratch-wall-header { t">
 <meta property="og:type" content="website">
 <meta property="og:title" content="100 件恋爱小事">
 <meta property="og:url" content="https://www.jiabooo.top/100-things/index.html">
 <meta property="og:site_name" content="Jiabooo的妙妙屋">
-<meta property="og:description" content="✨ 我们一起完成的 100 件浪漫小事   用指尖抹去时间的灰尘，重温那些闪闪发光的日子           我们已经完成了 0 &#x2F; 100 件小事啦                                .scratch-wall-header { text-align: center; margin-bottom: 40px; position: relative; z-ind">
+<meta property="og:description" content="✨ 我们一起完成的 100 件浪漫小事   用指尖抹去时间的灰尘，重温那些闪闪发光的日子           我们已经完成了 0 &#x2F; 100 件小事啦                                                                                                 .scratch-wall-header { t">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.jiabooo.top/img/head.jpg">
 <meta property="article:published_time" content="2026-04-16T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-19T17:50:41.985Z">
+<meta property="article:modified_time" content="2026-04-19T18:00:06.756Z">
 <meta property="article:author" content="Jiabooo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.jiabooo.top/img/head.jpg"><link rel="shortcut icon" href="/img/small_logo32.ico"><link rel="canonical" href="https://www.jiabooo.top/100-things/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
@@ -55,7 +55,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2026-04-20 01:50:41'
+  postUpdate: '2026-04-20 02:00:06'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -186,8 +186,25 @@
   </div>
 </div>
 
-<div class="glass-board-wrapper">
-  <div id="scratch-grid" class="scratch-grid"></div>
+<div class="glass-board-layout">
+  
+  <div class="spotlight-background">
+    <div class="spotlight spotlight-1"></div>
+    <div class="spotlight spotlight-2"></div>
+    <div class="spotlight spotlight-3"></div>
+    <div class="spotlight spotlight-4"></div>
+    <div class="spotlight spotlight-5"></div>
+    <div class="spotlight spotlight-6"></div>
+    <div class="spotlight spotlight-7"></div>
+    <div class="spotlight spotlight-8"></div>
+  </div>
+  
+  <div class="side-area clear-side left"></div>
+  
+  <div id="scratch-grid" class="scratch-grid glass-panel center"></div>
+  
+  <div class="side-area clear-side right"></div>
+
 </div>
 
 <style>
@@ -238,58 +255,122 @@
   }
 
   /* ==========================================
-     【终极重构】：全屏流体蓝粉光晕 + 毛玻璃环境
+     【终极布局与重构】：全屏斑点背景 + 中央毛玻璃面板
      ========================================== */
   
-  .glass-board-wrapper {
+  .glass-board-layout {
     position: relative;
     width: 100%;
     z-index: 1;
     padding: 20px 0; 
+    display: flex; /* 使用 flex 布局策略 */
+    justify-content: space-between;
+    align-items: stretch; /* 确保所有区域高度一致 */
+    margin: 10px;
   }
 
-  /* 铺满整个屏幕的流体渐变色底图 */
-  .glass-board-wrapper::before {
-    content: '';
-    position: fixed; /* 固定在视口，滚动时背景颜色不动，毛玻璃在上面滑 */
+  /* 1. 全屏独立的彩色斑点背景 */
+  .spotlight-background {
+    position: fixed; /* 固定在视口 */
     top: 0; left: 0; right: 0; bottom: 0;
-    
-    /* 蓝、粉、橘三色交融的大型放射状渐变，加上一个温柔的底色 */
-    background: 
-      radial-gradient(circle at 15% 50%, rgba(73, 177, 245, 0.4), transparent 60%),
-      radial-gradient(circle at 85% 30%, rgba(255, 154, 158, 0.4), transparent 60%),
-      radial-gradient(circle at 50% 80%, rgba(255, 114, 66, 0.25), transparent 60%),
-      linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-      
     z-index: -2; 
     pointer-events: none;
-    
-    /* 缓慢的呼吸放大动画，让背景色彩仿佛在流动 */
-    animation: fluidGlow 15s ease-in-out infinite alternate;
+    background-color: #fdfbfb; /* 干净的底色 */
   }
 
-  @keyframes fluidGlow {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.15); }
+  /* 独立的圆形彩色斑点球 */
+  .spotlight {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(10px); /* 细腻的模糊，让球体看起来柔和 */
+    opacity: 0.15; /* 保持通透感 */
+    animation: spotlightGlow 20s infinite alternate; /* 加个超慢的呼吸浮动 */
   }
 
-  /* 毛玻璃网格墙本体 */
+  /* 蓝粉配色独立的彩色斑点位置和大小分布 */
+  .spotlight-1 {
+    top: 10%; left: 5%;
+    width: 250px; height: 250px;
+    background-color: #49b1f5;
+  }
+  .spotlight-2 {
+    top: 25%; left: 30%;
+    width: 350px; height: 350px;
+    background-color: #ff9a9e;
+    animation-delay: -5s;
+  }
+  .spotlight-3 {
+    top: 10%; left: 60%;
+    width: 300px; height: 300px;
+    background-color: #ff7242;
+    animation-delay: -10s;
+  }
+  .spotlight-4 {
+    top: 20%; left: 85%;
+    width: 200px; height: 200px;
+    background-color: #49b1f5;
+    animation-delay: -15s;
+  }
+  .spotlight-5 {
+    top: 60%; left: 10%;
+    width: 300px; height: 300px;
+    background-color: #ff7242;
+    animation-delay: -3s;
+  }
+  .spotlight-6 {
+    top: 70%; left: 35%;
+    width: 250px; height: 250px;
+    background-color: #49b1f5;
+    animation-delay: -8s;
+  }
+  .spotlight-7 {
+    top: 60%; left: 65%;
+    width: 350px; height: 350px;
+    background-color: #ff9a9e;
+    animation-delay: -13s;
+  }
+  .spotlight-8 {
+    top: 75%; left: 90%;
+    width: 200px; height: 200px;
+    background-color: #ff7242;
+    animation-delay: -18s;
+  }
+
+  @keyframes spotlightGlow {
+    0% { transform: scale(1) translateY(0); }
+    100% { transform: scale(1.1) translateY(15px); }
+  }
+
+  /* 布局子区域：左右清晰，中间模糊 */
+  .side-area {
+    flex: 1; /* 左右各占 1/3 */
+    position: relative;
+    z-index: 1;
+    pointer-events: none; /* 侧边清晰区域不阻挡交互 */
+  }
+
+  /* 2. 中央毛玻璃面板本体 */
   .scratch-grid {
+    flex: 2; /* 中间占 2/3 */
+    position: relative;
+    z-index: 2; /* 确保高层级 */
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 35px 25px; 
     padding: 40px 25px;
     
-    /* 强力背景模糊，透出后面的蓝粉交织光晕 */
-    background: rgba(255, 255, 255, 0.3); /* 稍微提高底色透明度，让色彩透过来更清透 */
+    /* 强力背景模糊，仅在中间部分晕染底部的彩色斑点群 */
+    background: rgba(255, 255, 255, 0.3); /* 半透明底色 */
     backdrop-filter: blur(25px); 
     -webkit-backdrop-filter: blur(25px); 
     
     border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.7); 
-    border-right-color: rgba(255, 255, 255, 0.3);
-    border-bottom-color: rgba(255, 255, 255, 0.3);
+    /* 给玻璃面板加一个发光的白色高光描边 */
+    border: 1px solid rgba(255, 255, 255, 0.8); 
+    border-right-color: rgba(255, 255, 255, 0.4);
+    border-bottom-color: rgba(255, 255, 255, 0.4);
     
+    /* 让面板整体浮起来的柔和阴影 */
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); 
   }
 
@@ -515,7 +596,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     { id: "81", title: "洗完脸互相给对方敷上面膜", date: "待解锁", img: "", completed: false },
     { id: "82", title: "去当一次充满爱心的志愿者", date: "待解锁", img: "", completed: false },
-    { id: "83", title: "对方生日时零点准时送上祝福", date: "待解锁", img: "", completed: false },
+    { id: "83", title: "在对方生日时零点准时送上祝福", date: "待解锁", img: "", completed: false },
     { id: "84", title: "一起去异国他乡旅行一次", date: "待解锁", img: "", completed: false },
     { id: "85", title: "互相分享手机里自己最丑的照片", date: "待解锁", img: "", completed: false },
     { id: "86", title: "在车里听着喜欢的歌漫无目的开", date: "待解锁", img: "", completed: false },
@@ -536,13 +617,17 @@ document.addEventListener('DOMContentLoaded', function() {
     { id: "100", title: "兑现所有的承诺，一起慢慢变老", date: "待解锁", img: "", completed: false }
   ];
 
-  // ==========================================
-  // 计算进度与滚动动画 
-  // ==========================================
+  // 计算和显示进度
   const totalTasks = tasks.length;
   const completedTasksCount = tasks.filter(task => task.completed).length;
   const progressPercent = (completedTasksCount / totalTasks) * 100;
   
+  document.getElementById('completed-count').innerText = completedTasksCount;
+  setTimeout(() => {
+    document.getElementById('progress-bar-fill').style.width = progressPercent + '%';
+  }, 300);
+
+  // --- 【数字和进度条动画】 ---
   function animateValue(obj, start, end, duration) {
     let startTimestamp = null;
     const step = (timestamp) => {
@@ -558,26 +643,15 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     window.requestAnimationFrame(step);
   }
-
-  const progressContainer = document.querySelector('.progress-container');
   const countElement = document.getElementById('completed-count');
-  const progressBarFill = document.getElementById('progress-bar-fill');
+  animateValue(countElement, 0, completedTasksCount, 1500);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.getElementById('progress-bar-fill').style.width = progressPercent + '%';
+    });
+  });
+  // --------------------------------------------------------
 
-  const observer = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-      setTimeout(() => {
-        animateValue(countElement, 0, completedTasksCount, 1500); 
-        progressBarFill.style.width = progressPercent + '%'; 
-      }, 500);
-      observer.disconnect(); 
-    }
-  }, { threshold: 0.1 }); 
-
-  observer.observe(progressContainer);
-
-  // ==========================================
-  // 渲染卡片与刮刮乐逻辑
-  // ==========================================
   const grid = document.getElementById('scratch-grid');
 
   tasks.forEach(task => {
@@ -629,7 +703,6 @@ document.addEventListener('DOMContentLoaded', function() {
   function initScratchCard(canvas, task) {
     const ctx = canvas.getContext('2d');
     let isDrawing = false;
-    
     let currentCardWidth = canvas.offsetWidth;
 
     function resizeCanvas() {
@@ -659,7 +732,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     resizeCanvas();
-
     window.addEventListener('resize', function() {
       if (canvas.offsetWidth !== currentCardWidth) {
         currentCardWidth = canvas.offsetWidth;
@@ -676,37 +748,16 @@ document.addEventListener('DOMContentLoaded', function() {
         y: clientY - rect.top
       };
     }
-
-    function startDraw(e) {
-      isDrawing = true;
-      const pos = getPos(e);
-      ctx.beginPath();
-      ctx.moveTo(pos.x, pos.y);
-    }
-
+    function startDraw(e) { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); }
     function draw(e) {
       if (!isDrawing) return;
       if(e.touches && e.cancelable) e.preventDefault();
-      const pos = getPos(e);
-      ctx.lineTo(pos.x, pos.y);
-      ctx.lineWidth = 45; 
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.stroke();
+      const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.lineWidth = 45; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.stroke();
     }
+    function endDraw() { isDrawing = false; }
 
-    function endDraw() {
-      isDrawing = false;
-    }
-
-    canvas.addEventListener('mousedown', startDraw);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', endDraw);
-    canvas.addEventListener('mouseleave', endDraw);
-
-    canvas.addEventListener('touchstart', startDraw, { passive: false });
-    canvas.addEventListener('touchmove', draw, { passive: false });
-    canvas.addEventListener('touchend', endDraw);
+    canvas.addEventListener('mousedown', startDraw); canvas.addEventListener('mousemove', draw); canvas.addEventListener('mouseup', endDraw); canvas.addEventListener('mouseleave', endDraw);
+    canvas.addEventListener('touchstart', startDraw, { passive: false }); canvas.addEventListener('touchmove', draw, { passive: false }); canvas.addEventListener('touchend', endDraw);
   }
 });
 </script>

@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>100 件恋爱小事 | Jiabooo的妙妙屋</title><meta name="author" content="Jiabooo"><meta name="copyright" content="Jiabooo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="✨ 我们一起完成的 100 件浪漫小事   用指尖抹去时间的灰尘，重温那些闪闪发光的日子           我们已经完成了 0 &#x2F; 100 件小事啦                            .scratch-wall-header { text-align: center; margin-bottom: 40px; }   .scratch-wall-header h2 {">
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>100 件恋爱小事 | Jiabooo的妙妙屋</title><meta name="author" content="Jiabooo"><meta name="copyright" content="Jiabooo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="✨ 我们一起完成的 100 件浪漫小事   用指尖抹去时间的灰尘，重温那些闪闪发光的日子           我们已经完成了 0 &#x2F; 100 件小事啦                                                                                  .scratch-wall-header { text-align: cent">
 <meta property="og:type" content="website">
 <meta property="og:title" content="100 件恋爱小事">
 <meta property="og:url" content="https://www.jiabooo.top/100-things/index.html">
 <meta property="og:site_name" content="Jiabooo的妙妙屋">
-<meta property="og:description" content="✨ 我们一起完成的 100 件浪漫小事   用指尖抹去时间的灰尘，重温那些闪闪发光的日子           我们已经完成了 0 &#x2F; 100 件小事啦                            .scratch-wall-header { text-align: center; margin-bottom: 40px; }   .scratch-wall-header h2 {">
+<meta property="og:description" content="✨ 我们一起完成的 100 件浪漫小事   用指尖抹去时间的灰尘，重温那些闪闪发光的日子           我们已经完成了 0 &#x2F; 100 件小事啦                                                                                  .scratch-wall-header { text-align: cent">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.jiabooo.top/img/head.jpg">
 <meta property="article:published_time" content="2026-04-16T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-19T18:01:22.688Z">
+<meta property="article:modified_time" content="2026-04-19T18:05:25.185Z">
 <meta property="article:author" content="Jiabooo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.jiabooo.top/img/head.jpg"><link rel="shortcut icon" href="/img/small_logo32.ico"><link rel="canonical" href="https://www.jiabooo.top/100-things/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
@@ -55,7 +55,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2026-04-20 02:01:22'
+  postUpdate: '2026-04-20 02:05:25'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -186,10 +186,26 @@
   </div>
 </div>
 
-<div id="scratch-grid" class="scratch-grid"></div>
+<div class="glass-board-layout">
+  
+  <div class="spotlight-background">
+    <div class="spotlight spotlight-1"></div>
+    <div class="spotlight spotlight-2"></div>
+    <div class="spotlight spotlight-3"></div>
+    <div class="spotlight spotlight-4"></div>
+    <div class="spotlight spotlight-5"></div>
+  </div>
+  
+  <div class="side-area clear-side left"></div>
+  
+  <div id="scratch-grid" class="scratch-grid glass-panel center"></div>
+  
+  <div class="side-area clear-side right"></div>
+
+</div>
 
 <style>
-  .scratch-wall-header { text-align: center; margin-bottom: 40px; }
+  .scratch-wall-header { text-align: center; margin-bottom: 40px; position: relative; z-index: 2; }
   .scratch-wall-header h2 { 
     font-family: "Dancing Script", cursive, "微软雅黑"; 
     font-size: 2.2rem; 
@@ -221,7 +237,8 @@
   .progress-bar-bg {
     width: 100%;
     height: 12px;
-    background-color: #e8edef;
+    /* 让进度条底色也带一点温暖的黄调 */
+    background-color: rgba(255, 245, 210, 0.6); 
     border-radius: 20px;
     overflow: hidden;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
@@ -231,29 +248,137 @@
     width: 0%; 
     background: linear-gradient(90deg, #49b1f5, #ff7242);
     border-radius: 20px;
-    /* 【修改点1】：将 cubic-bezier 改为 linear，实现匀速生长 */
     transition: width 1.5s linear; 
     box-shadow: 0 2px 5px rgba(255, 114, 66, 0.3);
   }
 
-  /* --- 黄色温馨便签板背景 --- */
+  /* ==========================================
+     【终极梦幻版】：巨大光球缓慢移动 + 黄色毛玻璃
+     ========================================== */
+  
+  .glass-board-layout {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    padding: 20px 0; 
+    display: flex; 
+    justify-content: space-between;
+    align-items: stretch; 
+    margin: 10px 0;
+  }
+
+  /* 1. 大背景底色 */
+  .spotlight-background {
+    position: fixed; 
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -2; 
+    pointer-events: none;
+    overflow: hidden;
+    background-color: #fdfaf6; /* 极浅的暖白底色 */
+  }
+
+  /* 2. 巨大的彩色光球 */
+  .spotlight {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px); /* 极度柔和的边缘，消除色块感 */
+    opacity: 0.65; /* 适中的透明度 */
+  }
+
+  /* 分配大小、颜色和专属动画 */
+  .spotlight-1 {
+    width: 600px; height: 600px;
+    background-color: #ffb6b9; /* 柔和粉 */
+    top: -10%; left: -5%;
+    animation: float1 25s infinite alternate ease-in-out;
+  }
+  .spotlight-2 {
+    width: 800px; height: 800px;
+    background-color: #a1c4fd; /* 梦幻蓝 */
+    bottom: -15%; right: -10%;
+    animation: float2 30s infinite alternate ease-in-out;
+  }
+  .spotlight-3 {
+    width: 550px; height: 550px;
+    background-color: #fbc2eb; /* 桃粉色 */
+    top: 30%; left: 35%;
+    animation: float3 22s infinite alternate ease-in-out;
+  }
+  .spotlight-4 {
+    width: 700px; height: 700px;
+    background-color: #f6d365; /* 温暖橘黄 */
+    top: -20%; right: 20%;
+    animation: float4 35s infinite alternate ease-in-out;
+  }
+  .spotlight-5 {
+    width: 500px; height: 500px;
+    background-color: #e0c3fc; /* 丁香紫 */
+    bottom: 5%; left: 20%;
+    animation: float5 28s infinite alternate ease-in-out;
+  }
+
+  /* --- 光球缓慢移动的轨迹动画 --- */
+  @keyframes float1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(12vw, 15vh) scale(1.1); }
+  }
+  @keyframes float2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-15vw, -10vh) scale(1.05); }
+  }
+  @keyframes float3 {
+    0% { transform: translate(0, 0) scale(1.1); }
+    100% { transform: translate(-10vw, 20vh) scale(0.9); }
+  }
+  @keyframes float4 {
+    0% { transform: translate(0, 0) scale(0.9); }
+    100% { transform: translate(20vw, 5vh) scale(1.15); }
+  }
+  @keyframes float5 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(15vw, -15vh) scale(1.1); }
+  }
+
+  /* 3. 布局：左右留白 */
+  .side-area {
+    flex: 1; 
+    position: relative;
+    z-index: 1;
+    pointer-events: none; 
+  }
+
+  /* 4. 中央黄色毛玻璃面板 */
   .scratch-grid {
+    flex: 2; 
+    position: relative;
+    z-index: 2; 
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 35px 25px; 
-    padding: 35px 20px;
-    background-color: #fdf6e3; 
-    border-radius: 16px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.04);
+    padding: 40px 25px;
+    
+    /* 【核心修改】：黄色基调的半透明玻璃 */
+    background: rgba(255, 245, 210, 0.35); 
+    backdrop-filter: blur(30px); 
+    -webkit-backdrop-filter: blur(30px); 
+    
+    border-radius: 24px;
+    /* 白色发光边框，增加玻璃厚度感 */
+    border: 1px solid rgba(255, 255, 255, 0.6); 
+    border-right-color: rgba(255, 255, 255, 0.2);
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+    
+    /* 暖色系的投影，更加融合 */
+    box-shadow: 0 20px 40px rgba(180, 140, 100, 0.08); 
   }
 
   /* --- 每一张拍立得风格的便签 --- */
   .scratch-card {
     position: relative;
     height: 240px;
-    background: #fffef2; 
+    background: rgba(255, 254, 248, 0.95); 
     border-radius: 4px 4px 12px 12px;
-    box-shadow: 2px 5px 15px rgba(0,0,0,0.08);
+    box-shadow: 2px 8px 20px rgba(0,0,0,0.06), 0 0 1px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
     overflow: visible; 
@@ -267,14 +392,14 @@
   @media (hover: hover) {
     .scratch-card:hover { 
       transform: translateY(-5px) rotate(0deg); 
-      box-shadow: 5px 12px 25px rgba(0,0,0,0.15); 
+      box-shadow: 5px 15px 30px rgba(0,0,0,0.12); 
       z-index: 10; 
     }
   }
 
   .scratch-card:active {
     transform: scale(0.96) translateY(2px) !important;
-    box-shadow: 1px 3px 8px rgba(0,0,0,0.1) !important;
+    box-shadow: 1px 3px 8px rgba(0,0,0,0.08) !important;
     transition: all 0.1s ease; 
     z-index: 10;
   }
@@ -289,9 +414,10 @@
     width: 70px;
     height: 25px;
     background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(2px);
-    border: 1px solid rgba(0,0,0,0.05);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.6); 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     z-index: 20;
   }
   .scratch-card:nth-child(even)::before { transform: translateX(-50%) rotate(2deg); }
@@ -304,9 +430,9 @@
     right: 0;
     width: 28px;
     height: 28px;
-    background: linear-gradient(to top left, #fdf6e3 50%, #e0d8bf 52%, #fffef2 100%);
+    background: linear-gradient(to top left, transparent 50%, rgba(0,0,0,0.05) 52%, #fffef2 100%);
     border-bottom-right-radius: 12px;
-    box-shadow: -3px -3px 6px rgba(0,0,0,0.06);
+    box-shadow: -2px -2px 5px rgba(0,0,0,0.04);
     z-index: 25; 
     pointer-events: none; 
   }
@@ -373,6 +499,13 @@
     border-radius: 4px 4px 12px 12px;
   }
   .scratch-card { user-select: none; -webkit-user-select: none; }
+  
+  /* 手机端适配：消除侧边空隙，让毛玻璃占满 */
+  @media screen and (max-width: 768px) {
+    .glass-board-layout { flex-direction: column; }
+    .side-area { display: none; }
+    .scratch-grid { width: 100%; margin: 0; border-radius: 16px; padding: 20px 15px; }
+  }
 </style>
 
 <script>
@@ -468,7 +601,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     { id: "81", title: "洗完脸互相给对方敷上面膜", date: "待解锁", img: "", completed: false },
     { id: "82", title: "去当一次充满爱心的志愿者", date: "待解锁", img: "", completed: false },
-    { id: "83", title: "在对方生日时零点准时送上祝福", date: "待解锁", img: "", completed: false },
+    { id: "83", title: "对方生日时零点准时送上祝福", date: "待解锁", img: "", completed: false },
     { id: "84", title: "一起去异国他乡旅行一次", date: "待解锁", img: "", completed: false },
     { id: "85", title: "互相分享手机里自己最丑的照片", date: "待解锁", img: "", completed: false },
     { id: "86", title: "在车里听着喜欢的歌漫无目的开", date: "待解锁", img: "", completed: false },
@@ -490,7 +623,7 @@ document.addEventListener('DOMContentLoaded', function() {
   ];
 
   // ==========================================
-  // 计算进度与滚动动画 (防偷跑版 + 匀速版)
+  // 计算进度与滚动动画 
   // ==========================================
   const totalTasks = tasks.length;
   const completedTasksCount = tasks.filter(task => task.completed).length;
@@ -500,7 +633,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let startTimestamp = null;
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
-      // 【修改点2】：直接使用纯线性的进度 progress 实现匀速滚动
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
       
       obj.innerHTML = Math.floor(progress * (end - start) + start);
@@ -520,7 +652,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const observer = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting) {
       setTimeout(() => {
-        // 执行 3秒 的数字匀速滚动动画
         animateValue(countElement, 0, completedTasksCount, 1500); 
         progressBarFill.style.width = progressPercent + '%'; 
       }, 500);

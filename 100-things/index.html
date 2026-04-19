@@ -7,7 +7,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.jiabooo.top/img/head.jpg">
 <meta property="article:published_time" content="2026-04-16T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-19T14:36:12.310Z">
+<meta property="article:modified_time" content="2026-04-19T15:00:27.003Z">
 <meta property="article:author" content="Jiabooo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.jiabooo.top/img/head.jpg"><link rel="shortcut icon" href="/img/small_logo32.ico"><link rel="canonical" href="https://www.jiabooo.top/100-things/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
@@ -55,7 +55,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2026-04-19 22:36:12'
+  postUpdate: '2026-04-19 23:00:27'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -231,35 +231,38 @@
     width: 0%; 
     background: linear-gradient(90deg, #49b1f5, #ff7242);
     border-radius: 20px;
-    /* 【修改点1】：将 cubic-bezier 改为 linear，实现匀速生长 */
     transition: width 1.5s linear; 
     box-shadow: 0 2px 5px rgba(255, 114, 66, 0.3);
   }
 
-  /* --- 黄色温馨便签板背景 --- */
-.scratch-grid {
+  /* --- 【核心重构】：高级质感亚麻/原木告示板 --- */
+  .scratch-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 35px 25px; 
-    padding: 40px 25px;
+    padding: 45px 30px;
     
-    /* 【核心修改】：使用 CSS 图案模拟软木板纹理 */
-    background-color: #dcb383; /* 软木底色 */
+    /* 1. 高级底色：温润的燕麦/奶咖色，彻底告别斑点 */
+    background-color: #e3d5c8; 
+    
+    /* 2. 细腻纹理：极细的斜线模拟高级亚麻布/毛毡的编织质感，再加上微弱的柔光渐变 */
     background-image: 
-      radial-gradient(#c79e6f 15%, transparent 16%),
-      radial-gradient(#c79e6f 15%, transparent 16%),
-      radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%),
-      radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%);
-    background-position: 0 0, 8px 8px, 0 1px, 8px 9px;
-    background-size: 16px 16px;
+      repeating-linear-gradient(45deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 2px, transparent 2px, transparent 4px),
+      linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 100%);
     
-    border-radius: 12px;
+    /* 3. 圆角与双层边框：打造胡桃木画框的层次感 */
+    border-radius: 24px;
+    border: 10px solid #b39374; /* 浅木纹内框 */
+    outline: 4px solid #826245; /* 深木纹外圈封边 */
     
-    /* 添加木质边框和内阴影 */
-    border: 8px solid #8b5a2b; /* 深色木边框 */
+    /* 4. 光影魔法：打造逼真的深邃凹陷感和墙面悬浮感 */
     box-shadow: 
-      inset 0 0 30px rgba(0,0,0,0.5), /* 强烈的内阴影，增加深度 */
-      0 10px 20px rgba(0,0,0,0.1); /* 外阴影，让整个板子浮起来 */
+      inset 0 8px 25px rgba(0, 0, 0, 0.25), /* 告示板内部的深邃阴影，感觉板子是陷进去的 */
+      inset 0 0 60px rgba(120, 80, 40, 0.15), /* 四周暗角，增加复古氛围 */
+      0 20px 40px rgba(0, 0, 0, 0.12); /* 整个画框挂在墙上产生的巨大外阴影 */
+      
+    /* 保证 outline 产生的边框在布局时不会被意外遮挡 */
+    margin: 10px;
   }
 
   /* --- 每一张拍立得风格的便签 --- */
@@ -268,12 +271,12 @@
     height: 240px;
     background: #fffef2; 
     border-radius: 4px 4px 12px 12px;
-    box-shadow: 2px 5px 15px rgba(0,0,0,0.08);
+    /* 调整卡片阴影，使其在带有内部凹陷的背景中更加立体 */
+    box-shadow: 2px 8px 20px rgba(0,0,0,0.12), 0 0 1px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
     overflow: visible; 
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
-    box-shadow: 3px 8px 20px rgba(0,0,0,0.15); /* 加深初始阴影 */
   }
 
   .scratch-card:nth-child(odd) { transform: rotate(-2deg); }
@@ -283,7 +286,7 @@
   @media (hover: hover) {
     .scratch-card:hover { 
       transform: translateY(-5px) rotate(0deg); 
-      box-shadow: 8px 15px 30px rgba(0,0,0,0.25); /* 悬停时阴影更深 */
+      box-shadow: 8px 15px 30px rgba(0,0,0,0.18); 
       z-index: 10; 
     }
   }
@@ -310,7 +313,7 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     z-index: 20;
   }
-  .scratch-card:nth-child(even)::before { transform: translateX(-50%) rotate(2deg); }
+  .scratch-card:nth-child(even):before { transform: translateX(-50%) rotate(2deg); }
 
   /* --- 右下角逼真的纸张折角特效 --- */
   .scratch-card::after {
@@ -320,7 +323,8 @@
     right: 0;
     width: 28px;
     height: 28px;
-    background: linear-gradient(to top left, #fdf6e3 50%, #e0d8bf 52%, #fffef2 100%);
+    /* 折角色匹配亚麻板环境色 */
+    background: linear-gradient(to top left, #e3d5c8 50%, #dfc8b3 52%, #fffef2 100%);
     border-bottom-right-radius: 12px;
     box-shadow: -3px -3px 6px rgba(0,0,0,0.06);
     z-index: 25; 
@@ -506,7 +510,7 @@ document.addEventListener('DOMContentLoaded', function() {
   ];
 
   // ==========================================
-  // 计算进度与滚动动画 (防偷跑版 + 匀速版)
+  // 计算进度与滚动动画 
   // ==========================================
   const totalTasks = tasks.length;
   const completedTasksCount = tasks.filter(task => task.completed).length;
@@ -516,7 +520,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let startTimestamp = null;
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
-      // 【修改点2】：直接使用纯线性的进度 progress 实现匀速滚动
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
       
       obj.innerHTML = Math.floor(progress * (end - start) + start);
@@ -536,7 +539,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const observer = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting) {
       setTimeout(() => {
-        // 执行 3秒 的数字匀速滚动动画
         animateValue(countElement, 0, completedTasksCount, 1500); 
         progressBarFill.style.width = progressPercent + '%'; 
       }, 500);

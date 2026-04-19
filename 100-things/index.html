@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>100 件恋爱小事 | Jiabooo的妙妙屋</title><meta name="author" content="Jiabooo"><meta name="copyright" content="Jiabooo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="✨ 我们一起完成的 100 件浪漫小事   用指尖抹去时间的灰尘，重温那些闪闪发光的日子           我们已经完成了 0 &#x2F; 100 件小事啦                            .scratch-wall-header { text-align: center; margin-bottom: 40px; position: relative; z-index:">
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>100 件恋爱小事 | Jiabooo的妙妙屋</title><meta name="author" content="Jiabooo"><meta name="copyright" content="Jiabooo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="✨ 我们一起完成的 100 件浪漫小事   用指尖抹去时间的灰尘，重温那些闪闪发光的日子           我们已经完成了 0 &#x2F; 100 件小事啦                                         .scratch-wall-header { text-align: center; margin-bottom: 40px; position: relati">
 <meta property="og:type" content="website">
 <meta property="og:title" content="100 件恋爱小事">
 <meta property="og:url" content="https://www.jiabooo.top/100-things/index.html">
 <meta property="og:site_name" content="Jiabooo的妙妙屋">
-<meta property="og:description" content="✨ 我们一起完成的 100 件浪漫小事   用指尖抹去时间的灰尘，重温那些闪闪发光的日子           我们已经完成了 0 &#x2F; 100 件小事啦                            .scratch-wall-header { text-align: center; margin-bottom: 40px; position: relative; z-index:">
+<meta property="og:description" content="✨ 我们一起完成的 100 件浪漫小事   用指尖抹去时间的灰尘，重温那些闪闪发光的日子           我们已经完成了 0 &#x2F; 100 件小事啦                                         .scratch-wall-header { text-align: center; margin-bottom: 40px; position: relati">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.jiabooo.top/img/head.jpg">
 <meta property="article:published_time" content="2026-04-16T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-19T16:19:50.404Z">
+<meta property="article:modified_time" content="2026-04-19T17:46:49.469Z">
 <meta property="article:author" content="Jiabooo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.jiabooo.top/img/head.jpg"><link rel="shortcut icon" href="/img/small_logo32.ico"><link rel="canonical" href="https://www.jiabooo.top/100-things/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
@@ -55,7 +55,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2026-04-20 00:19:50'
+  postUpdate: '2026-04-20 01:46:49'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -186,7 +186,12 @@
   </div>
 </div>
 
-<div id="scratch-grid" class="scratch-grid"></div>
+<div class="glass-board-wrapper">
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+  
+  <div id="scratch-grid" class="scratch-grid"></div>
+</div>
 
 <style>
   .scratch-wall-header { text-align: center; margin-bottom: 40px; position: relative; z-index: 2; }
@@ -221,7 +226,7 @@
   .progress-bar-bg {
     width: 100%;
     height: 12px;
-    background-color: rgba(255,255,255,0.5); /* 进度条底色也微调为半透明适应毛玻璃环境 */
+    background-color: #f0f0f0;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
@@ -236,57 +241,72 @@
   }
 
   /* ==========================================
-     【核心重构】：高级毛玻璃 (Glassmorphism) 背景
+     【核心重构】：高级毛玻璃 (Glassmorphism) 环境
      ========================================== */
   
-  /* 1. 为了让毛玻璃透出颜色，我们需要给页面的大背景(body或父容器)加点颜色。
-        由于这是 Hexo 页面，我们直接在 scratch-grid 外部加一层伪元素制造环境色光晕 */
-  #scratch-grid::before {
-    content: '';
-    position: fixed;
-    top: 10%; left: -10%; width: 500px; height: 500px;
-    background: #49b1f5; filter: blur(150px); opacity: 0.15;
-    z-index: -2; pointer-events: none;
-  }
-  #scratch-grid::after {
-    content: '';
-    position: fixed;
-    bottom: 10%; right: -10%; width: 600px; height: 600px;
-    background: #ff7242; filter: blur(180px); opacity: 0.12;
-    z-index: -2; pointer-events: none;
+  .glass-board-wrapper {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    /* 给上下留点边距，让光晕有发散的空间 */
+    padding: 20px 0; 
   }
 
-  /* 2. 真正的毛玻璃网格墙 */
+  /* 颜色极度饱满的光晕，放在玻璃板正后方 */
+  .ambient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px); /* 降低一点模糊度，让颜色更实 */
+    z-index: -1; 
+    opacity: 0.6; /* 提高透明度，抵消博客白底的干扰 */
+    pointer-events: none;
+    animation: orbFloat 10s infinite alternate ease-in-out; /* 加个微弱的呼吸浮动动画 */
+  }
+  .orb-1 {
+    top: 5%; left: 0%;
+    width: 300px; height: 300px;
+    background: #49b1f5;
+  }
+  .orb-2 {
+    bottom: 5%; right: 0%;
+    width: 350px; height: 350px;
+    background: #ff7242;
+    animation-delay: -5s;
+  }
+
+  @keyframes orbFloat {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(30px) scale(1.1); }
+  }
+
+  /* 真正的毛玻璃网格墙 */
   .scratch-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 35px 25px; 
     padding: 40px 25px;
     
-    /* 关键：半透明的白底 + 强力的背景模糊 */
-    background: rgba(255, 255, 255, 0.4); 
-    backdrop-filter: blur(20px); 
-    -webkit-backdrop-filter: blur(20px); /* 兼容 Safari */
+    /* 玻璃质感配方：高透明度白底 + 强力背景模糊 */
+    background: rgba(255, 255, 255, 0.25); 
+    backdrop-filter: blur(25px); 
+    -webkit-backdrop-filter: blur(25px); 
     
     border-radius: 24px;
-    /* 给玻璃加一个极细的高光描边，增加物理厚度感 */
-    border: 1px solid rgba(255, 255, 255, 0.6); 
+    /* 玻璃边缘的高光反射线 */
+    border: 1px solid rgba(255, 255, 255, 0.7); 
+    border-right-color: rgba(255, 255, 255, 0.3);
+    border-bottom-color: rgba(255, 255, 255, 0.3);
     
-    /* 柔和的玻璃阴影 */
-    box-shadow: 
-      0 15px 35px rgba(0, 0, 0, 0.05),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.2); 
-      
-    position: relative;
-    z-index: 1;
+    /* 让整块玻璃浮起来的柔和阴影 */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); 
   }
 
   /* --- 每一张拍立得风格的便签 --- */
   .scratch-card {
     position: relative;
     height: 240px;
-    /* 让便签底色也稍微透一点点，融入环境 */
-    background: rgba(255, 254, 242, 0.95); 
+    /* 便签底色微微透光 */
+    background: rgba(255, 254, 248, 0.9); 
     border-radius: 4px 4px 12px 12px;
     box-shadow: 2px 8px 20px rgba(0,0,0,0.06), 0 0 1px rgba(0,0,0,0.05);
     display: flex;
@@ -323,10 +343,11 @@
     transform: translateX(-50%) rotate(-3deg);
     width: 70px;
     height: 25px;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(2px);
-    border: 1px solid rgba(255,255,255,0.4); /* 胶带边框减弱 */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.6); 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     z-index: 20;
   }
   .scratch-card:nth-child(even)::before { transform: translateX(-50%) rotate(2deg); }
@@ -339,10 +360,9 @@
     right: 0;
     width: 28px;
     height: 28px;
-    /* 配合便签的新底色稍微调亮折角 */
-    background: linear-gradient(to top left, transparent 50%, #eee8d5 52%, #fffef2 100%);
+    background: linear-gradient(to top left, transparent 50%, rgba(0,0,0,0.05) 52%, #fffef2 100%);
     border-bottom-right-radius: 12px;
-    box-shadow: -3px -3px 6px rgba(0,0,0,0.04);
+    box-shadow: -2px -2px 5px rgba(0,0,0,0.04);
     z-index: 25; 
     pointer-events: none; 
   }
@@ -504,7 +524,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     { id: "81", title: "洗完脸互相给对方敷上面膜", date: "待解锁", img: "", completed: false },
     { id: "82", title: "去当一次充满爱心的志愿者", date: "待解锁", img: "", completed: false },
-    { id: "83", title: "在对方生日时零点准时送上祝福", date: "待解锁", img: "", completed: false },
+    { id: "83", title: "对方生日时零点准时送上祝福", date: "待解锁", img: "", completed: false },
     { id: "84", title: "一起去异国他乡旅行一次", date: "待解锁", img: "", completed: false },
     { id: "85", title: "互相分享手机里自己最丑的照片", date: "待解锁", img: "", completed: false },
     { id: "86", title: "在车里听着喜欢的歌漫无目的开", date: "待解锁", img: "", completed: false },

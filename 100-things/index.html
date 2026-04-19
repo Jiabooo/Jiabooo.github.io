@@ -7,7 +7,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.jiabooo.top/img/head.jpg">
 <meta property="article:published_time" content="2026-04-16T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-19T14:08:26.150Z">
+<meta property="article:modified_time" content="2026-04-19T14:36:12.310Z">
 <meta property="article:author" content="Jiabooo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.jiabooo.top/img/head.jpg"><link rel="shortcut icon" href="/img/small_logo32.ico"><link rel="canonical" href="https://www.jiabooo.top/100-things/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
@@ -55,7 +55,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2026-04-19 22:08:26'
+  postUpdate: '2026-04-19 22:36:12'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -237,14 +237,29 @@
   }
 
   /* --- 黄色温馨便签板背景 --- */
-  .scratch-grid {
+.scratch-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 35px 25px; 
-    padding: 35px 20px;
-    background-color: #fdf6e3; 
-    border-radius: 16px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.04);
+    padding: 40px 25px;
+    
+    /* 【核心修改】：使用 CSS 图案模拟软木板纹理 */
+    background-color: #dcb383; /* 软木底色 */
+    background-image: 
+      radial-gradient(#c79e6f 15%, transparent 16%),
+      radial-gradient(#c79e6f 15%, transparent 16%),
+      radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%),
+      radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%);
+    background-position: 0 0, 8px 8px, 0 1px, 8px 9px;
+    background-size: 16px 16px;
+    
+    border-radius: 12px;
+    
+    /* 添加木质边框和内阴影 */
+    border: 8px solid #8b5a2b; /* 深色木边框 */
+    box-shadow: 
+      inset 0 0 30px rgba(0,0,0,0.5), /* 强烈的内阴影，增加深度 */
+      0 10px 20px rgba(0,0,0,0.1); /* 外阴影，让整个板子浮起来 */
   }
 
   /* --- 每一张拍立得风格的便签 --- */
@@ -258,6 +273,7 @@
     flex-direction: column;
     overflow: visible; 
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    box-shadow: 3px 8px 20px rgba(0,0,0,0.15); /* 加深初始阴影 */
   }
 
   .scratch-card:nth-child(odd) { transform: rotate(-2deg); }
@@ -267,7 +283,7 @@
   @media (hover: hover) {
     .scratch-card:hover { 
       transform: translateY(-5px) rotate(0deg); 
-      box-shadow: 5px 12px 25px rgba(0,0,0,0.15); 
+      box-shadow: 8px 15px 30px rgba(0,0,0,0.25); /* 悬停时阴影更深 */
       z-index: 10; 
     }
   }
